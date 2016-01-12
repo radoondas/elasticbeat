@@ -1,0 +1,145 @@
+// GET /_cluster/stats
+
+{
+  "timestamp": 1452613143793,
+  "cluster_name": "ebtest",
+  "status": "green",
+  "indices": {
+    "count": 48,
+    "shards": {
+      "total": 192,
+      "primaries": 96,
+      "replication": 1.0,
+      "index": {
+        "shards": {
+          "min": 4,
+          "max": 4,
+          "avg": 4.0
+        },
+        "primaries": {
+          "min": 2,
+          "max": 2,
+          "avg": 2.0
+        },
+        "replication": {
+          "min": 1.0,
+          "max": 1.0,
+          "avg": 1.0
+        }
+      }
+    },
+    "docs": {
+      "count": 3374864,
+      "deleted": 0
+    },
+    "store": {
+      "size_in_bytes": 1447952832,
+      "throttle_time_in_millis": 0
+    },
+    "fielddata": {
+      "memory_size_in_bytes": 0,
+      "evictions": 0
+    },
+    "query_cache": {
+      "memory_size_in_bytes": 0,
+      "total_count": 0,
+      "hit_count": 0,
+      "miss_count": 0,
+      "cache_size": 0,
+      "cache_count": 0,
+      "evictions": 0
+    },
+    "completion": {
+      "size_in_bytes": 0
+    },
+    "segments": {
+      "count": 986,
+      "memory_in_bytes": 16047485,
+      "terms_memory_in_bytes": 14337317,
+      "stored_fields_memory_in_bytes": 895488,
+      "term_vectors_memory_in_bytes": 0,
+      "norms_memory_in_bytes": 0,
+      "doc_values_memory_in_bytes": 814680,
+      "index_writer_memory_in_bytes": 0,
+      "index_writer_max_memory_in_bytes": 98304000,
+      "version_map_memory_in_bytes": 0,
+      "fixed_bit_set_memory_in_bytes": 0
+    },
+    "percolate": {
+      "total": 0,
+      "time_in_millis": 0,
+      "current": 0,
+      "memory_size_in_bytes": -1,
+      "memory_size": "-1b",
+      "queries": 0
+    }
+  },
+  "nodes": {
+    "count": {
+      "total": 2,
+      "master_only": 0,
+      "data_only": 0,
+      "master_data": 2,
+      "client": 0
+    },
+    "versions": [
+      "2.1.1"
+    ],
+    "os": {
+      "available_processors": 4,
+      "allocated_processors": 4,
+      "mem": {
+        "total_in_bytes": 0
+      },
+      "names": [
+        {
+          "name": "Linux",
+          "count": 1
+        }
+      ]
+    },
+    "process": {
+      "cpu": {
+        "percent": 1
+      },
+      "open_file_descriptors": {
+        "min": 1076,
+        "max": 1098,
+        "avg": 1087
+      }
+    },
+    "jvm": {
+      "max_uptime_in_millis": 1300300,
+      "versions": [
+        {
+          "version": "1.8.0_45",
+          "vm_name": "Java HotSpot(TM) 64-Bit Server VM",
+          "vm_version": "25.45-b02",
+          "vm_vendor": "Oracle Corporation",
+          "count": 2
+        }
+      ],
+      "mem": {
+        "heap_used_in_bytes": 579382992,
+        "heap_max_in_bytes": 2077753344
+      },
+      "threads": 89
+    },
+    "fs": {
+      "total_in_bytes": 263798026240,
+      "free_in_bytes": 57245945856,
+      "available_in_bytes": 43845775360,
+      "spins": "true"
+    },
+    "plugins": [
+      {
+        "name": "head",
+        "version": "master",
+        "description": "head - A web front end for an elastic search cluster",
+        "url": "/_plugin/head/",
+        "jvm": false,
+        "site": true
+      }
+    ]
+  }
+}
