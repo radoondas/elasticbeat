@@ -1,3 +1,5 @@
 /elasticbeat.iml
 /.project
 /.idea
+/Gemfile.lock
+/Gemfile
