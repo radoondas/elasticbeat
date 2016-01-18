@@ -1,0 +1,18 @@
+language: go
+
+go:
+- 1.5.2
+
+sudo: false
+
+before_install:
+  # Redo the travis setup but with the radoondas/elasticbeat path. This is needed so the package path is correct
+  - mkdir -p $HOME/gopath/src/github.com/radoondas/elasticbeat
+  - rsync -az ${TRAVIS_BUILD_DIR}/ $HOME/gopath/src/github.com/radoondas/elasticbeat/
+  - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/radoondas/elasticbeat
+  - cd $HOME/gopath/src/github.com/radoondas/elasticbeat
+  - go get github.com/elastic/beats/libbeat
+  - go get github.com/stretchr/testify/assert
+
+install:
+  - make
