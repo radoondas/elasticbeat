@@ -1,0 +1,148 @@
+version: 1.0
+
+defaults:
+  type: string
+  required: false
+  index: not_analyzed
+  doc_values: true
+  ignore_above: 1024
+
+env:
+  type: group
+  description: >
+    Contains common fields available in all event types.
+  fields:
+    - name: "@timestamp"
+      type: date
+      required: true
+      format: YYYY-MM-DDTHH:MM:SS.milliZ
+      example: 2015-01-24T14:06:05.071Z
+      description: >
+        The timestamp of when the measurements were taken. The precision is in milliseconds.
+        The timezone is UTC.
+
+    - name: type
+      description: >
+        Set to appropriate elasticsearch cluster, cluster health or nodes statistics
+      required: true
+
+    - name: count
+      type: int
+      description: >
+        The number of transactions that this event represents. This
+        is generally the inverse of the sampling rate. For example, for
+        a sample rate of 1/10, the count is 10. The count is used by the
+        UIs to return estimated values. Reserved for future usage.
+      required: true
+
+    - name: beat.name
+      description: >
+        Name of the Beat sending the events. If the shipper name is set
+        in the configuration file, then that value is used. If it is not set,
+        the hostname is used.
+
+    - name: beat.hostname
+      description: >
+        The hostname as returned by the operating system on which the Beat is
+        running.
+
+cluster_health:
+  type: group
+  description: >
+    Contains elasticsearch cluster health statistics.
+  fields:
+    - name: cluster_health
+      type: group
+      description: >
+        Contains elasticsearch cluster health statistics.
+
+      fields:
+        - name: cluster_name
+          path: cluster_name
+          type: string
+          description: >
+            Cluster name.
+
+        - name: status
+          path: status
+          type: string
+          description: >
+            Cluster status.
+
+        - name: timed_out
+          path: timed_out
+          type: bool
+          description: >
+            Timed out.
+
+        - name: number_of_nodes
+          path: number_of_nodes
+          type: int
+          description: >
+            Number of nodes in cluster.
+
+        - name: number_of_data_nodes
+          path: number_of_data_nodes
+          type: int
+          description: >
+            Number of data nodes in cluster.
+
+        - name: active_primary_shards
+          path: active_primary_shards
+          type: int
+          description: >
+            Number of active primary shards.
+
+        - name: active_shards
+          path: active_shards
+          type: int
+          description: >
+            Number of active shards.
+
+        - name: relocating_shards
+          path: relocating_shards
+          type: int
+          description: >
+            Number of relocating shards.
+
+        - name: intializing_shards
+          path: intializing_shards
+          type: int
+          description: >
+            Number of initializing shards.
+
+        - name: unassigned_shards
+          path: unassigned_shards
+          type: int
+          description: >
+            Number of unassigned shards.
+
+        - name: delayed_unassigned_shards
+          path: delayed_unassigned_shards
+          type: int
+          description: >
+            Number of delayed unassigned shards.
+
+        - name: number_of_pending_tasks
+          path: number_of_pending_tasks
+          type: int
+          description: >
+            Number of pending tasks.
+
+        - name: number_of_in_flight_fetch
+          path: number_of_in_flight_fetch
+          type: int
+          description: >
+            Number of in flight fetch.
+
+        - name: task_max_waiting_in_queue_millis
+          path: task_max_waiting_in_queue_millis
+          type: int
+          description: >
+            task_max_waiting_in_queue_millis.
+
+        - name: active_shards_percent_as_number
+          path: cluster_health.active_shards_percent_as_number
+          type: float
+          description: >
+            active_shards_percent_as_number.
