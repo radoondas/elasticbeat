@@ -31,6 +31,26 @@
               "type": "float"
             }
           }
+        },
+        "cluster_stats": {
+          "properties": {
+            "avg": {
+              "doc_values": "true",
+              "type": "float"
+            },
+            "max": {
+              "doc_values": "true",
+              "type": "float"
+            },
+            "min": {
+              "doc_values": "true",
+              "type": "float"
+            },
+            "replication": {
+              "doc_values": "true",
+              "type": "float"
+            }
+          }
         }
       }
     }

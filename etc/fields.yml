@@ -139,10 +139,423 @@ cluster_health:
           path: task_max_waiting_in_queue_millis
           type: int
           description: >
-            task_max_waiting_in_queue_millis.
+            Task max waiting in queue millis.
 
         - name: active_shards_percent_as_number
           path: cluster_health.active_shards_percent_as_number
           type: float
           description: >
-            active_shards_percent_as_number.
+            Active shards percent as number.
+
+cluster_stats:
+  type: group
+  description: >
+    Contains elasticsearch cluster stats statistics.
+  fields:
+    - name: cluster_stats
+      type: group
+      description: >
+        Contains elasticsearch cluster stats statistics.
+
+      fields:
+        - name: timestamp
+          path: timestamp
+          type: int
+          description: >
+            Timestamp.
+
+        - name: cluster_name
+          path: cluster_name
+          type: string
+          description: >
+            Cluster name.
+
+        - name: status
+          path: status
+          type: string
+          description: >
+            Cluster status.
+
+        - name: status_num
+          path: status_num
+          type: int
+          description: >
+            Cluster status - numerical.
+
+        - name: count
+          path: cluster_stats.indices.count
+          type: int
+          description: >
+            Indices count.
+
+        - name: total
+          path: cluster_stats.indices.shards.total
+          type: int
+          description: >
+            Total shards.
+
+        - name: primaries
+          path: cluster_stats.indices.shards.primaries
+          type: int
+          description: >
+            Shards primaries.
+
+        - name: replication
+          path: cluster_stats.indices.shards.replication
+          type: float
+          description: >
+            Shards replication.
+
+        - name: min
+          path: cluster_stats.indices.shards.index.shards.min
+          type: float
+          description: >
+            Shards index shards min.
+
+        - name: max
+          path: cluster_stats.indices.shards.index.shards.max
+          type: float
+          description: >
+            Shards index shards max.
+
+        - name: avg
+          path: cluster_stats.indices.shards.index.shards.avg
+          type: float
+          description: >
+            Shards index shards avg.
+
+        - name: min
+          path: cluster_stats.indices.shards.index.primaries.min
+          type: float
+          description: >
+            Shards primaries shards min.
+
+        - name: max
+          path: cluster_stats.indices.shards.index.primaries.max
+          type: float
+          description: >
+            Shards primaries shards max.
+
+        - name: avg
+          path: cluster_stats.indices.shards.index.primaries.avg
+          type: float
+          description: >
+            Shards primaries shards avg.
+
+        - name: min
+          path: cluster_stats.indices.shards.index.replication.min
+          type: float
+          description: >
+            Shards replication shards min.
+
+        - name: max
+          path: cluster_stats.indices.shards.index.replication.max
+          type: float
+          description: >
+            Shards replication shards max.
+
+        - name: avg
+          path: cluster_stats.indices.shards.index.replication.avg
+          type: float
+          description: >
+            Shards replication shards avg.
+
+        - name: count
+          path: cluster_stats.indices.docs.count
+          type: int
+          description: >
+            Indices docs count.
+
+        - name: deleted
+          path: cluster_stats.indices.docs.deleted
+          type: int
+          description: >
+            Indices docs deleted.
+
+        - name: size_in_bytes
+          path: cluster_stats.indices.store.size_in_bytes
+          type: int
+          description: >
+            Indices store size in bytes.
+
+        - name: throttle_time_in_millis
+          path: cluster_stats.indices.store.throttle_time_in_millis
+          type: int
+          description: >
+            Indices store throttle time in millis.
+
+        - name: memory_size_in_bytes
+          path: cluster_stats.indices.fielddata.memory_size_in_bytes
+          type: int
+          description: >
+            Indices fielddata memory size in bytes.
+
+        - name: evictions
+          path: cluster_stats.indices.fielddata.evictions
+          type: int
+          description: >
+            Indices fielddata evictions.
+
+        - name: memory_size_in_bytes
+          path: cluster_stats.indices.query_cache.memory_size_in_bytes
+          type: int
+          description: >
+            Indices query cache memory size in bytes.
+
+        - name: total_count
+          path: cluster_stats.indices.query_cache.total_count
+          type: int
+          description: >
+            Indices query cache total count.
+
+        - name: hit_count
+          path: cluster_stats.indices.query_cache.hit_count
+          type: int
+          description: >
+            Indices query cache hit count.
+
+        - name: miss_count
+          path: cluster_stats.indices.query_cache.miss_count
+          type: int
+          description: >
+            Indices query cache miss count.
+
+        - name: cache_size
+          path: cluster_stats.indices.query_cache.cache_size
+          type: int
+          description: >
+            Indices query cache cache size.
+
+        - name: cache_count
+          path: cluster_stats.indices.query_cache.cache_count
+          type: int
+          description: >
+            Indices query cache cache count.
+
+        - name: evictions
+          path: cluster_stats.indices.query_cache.evictions
+          type: int
+          description: >
+            Indices query cache evictions.
+
+        - name: size_in_bytes
+          path: cluster_stats.indices.completion.size_in_bytes
+          type: int
+          description: >
+            Indices completion size in bytes.
+
+        - name: count
+          path: cluster_stats.indices.segments.count
+          type: int
+          description: >
+            Indices segments count.
+
+        - name: memory_in_bytes
+          path: cluster_stats.indices.segments.memory_in_bytes
+          type: int
+          description: >
+            Indices segments memory in bytes.
+
+        - name: terms_memory_in_bytes
+          path: cluster_stats.indices.segments.terms_memory_in_bytes
+          type: int
+          description: >
+            Indices segments terms memory in bytes.
+
+        - name: stored_fields_memory_in_bytes
+          path: cluster_stats.indices.segments.stored_fields_memory_in_bytes
+          type: int
+          description: >
+            Indices segments stored fields memory in bytes.
+
+        - name: term_vectors_memory_in_bytes
+          path: cluster_stats.indices.segments.term_vectors_memory_in_bytes
+          type: int
+          description: >
+            Indices segments term vectors memory in bytes.
+
+        - name: norms_memory_in_bytes
+          path: cluster_stats.indices.segments.norms_memory_in_bytes
+          type: int
+          description: >
+            Indices segments norms memory in bytes.
+
+        - name: doc_values_memory_in_bytes
+          path: cluster_stats.indices.segments.doc_values_memory_in_bytes
+          type: int
+          description: >
+            Indices segments doc values memory in bytes.
+
+        - name: index_writer_memory_in_bytes
+          path: cluster_stats.indices.segments.index_writer_memory_in_bytes
+          type: int
+          description: >
+            Indices segments index writer memory in bytes.
+
+        - name: index_writer_max_memory_in_bytes
+          path: cluster_stats.indices.segments.index_writer_max_memory_in_bytes
+          type: int
+          description: >
+            Indices segments index writer max memory in bytes.
+
+        - name: version_map_memory_in_bytes
+          path: cluster_stats.indices.segments.version_map_memory_in_bytes
+          type: int
+          description: >
+            Indices segments version map memory in bytes.
+
+        - name: total
+          path: cluster_stats.indices.percolate.total
+          type: int
+          description: >
+            Indices percolate total.
+
+        - name: time_in_millis
+          path: cluster_stats.indices.percolate.time_in_millis
+          type: int
+          description: >
+            Indices percolate time in millis.
+
+        - name: current
+          path: cluster_stats.indices.percolate.current
+          type: int
+          description: >
+            Indices percolate current.
+
+        - name: memory_size_in_bytes
+          path: cluster_stats.indices.percolate.memory_size_in_bytes
+          type: int
+          description: >
+            Indices percolate memory size in bytes.
+
+        - name: memory_size
+          path: cluster_stats.indices.percolate.memory_size
+          type: string
+          description: >
+            Indices percolate memory size.
+
+        - name: queries
+          path: cluster_stats.indices.percolate.queries
+          type: int
+          description: >
+            Indices percolate queries.
+
+        - name: total
+          path: cluster_stats.nodes.count.total
+          type: int
+          description: >
+            Nodes count total.
+
+        - name: master_only
+          path: cluster_stats.nodes.count.master_only
+          type: int
+          description: >
+            Nodes count master only.
+
+        - name: data_only
+          path: cluster_stats.nodes.count.data_only
+          type: int
+          description: >
+            Nodes count data only.
+
+        - name: master_data
+          path: cluster_stats.nodes.count.master_data
+          type: int
+          description: >
+            Nodes count master data.
+
+        - name: client
+          path: cluster_stats.nodes.count.client
+          type: int
+          description: >
+            Nodes count client.
+
+        - name: available_processors
+          path: cluster_stats.nodes.os.available_processors
+          type: int
+          description: >
+            Nodes os available processors.
+
+        - name: allocated_processors
+          path: cluster_stats.nodes.os.allocated_processors
+          type: int
+          description: >
+            Nodes os allocated processors.
+
+        - name: total_in_bytes
+          path: cluster_stats.nodes.os.mem.total_in_bytes
+          type: int
+          description: >
+            Nodes os mem total in bytes.
+
+        - name: percent
+          path: cluster_stats.nodes.process.cpu.percent
+          type: int
+          description: >
+            Nodes process cpu percent.
+
+        - name: min
+          path: cluster_stats.nodes.process.open_file_descriptors.min
+          type: int
+          description: >
+            Nodes process open file descriptors min.
+
+        - name: max
+          path: cluster_stats.nodes.process.open_file_descriptors.max
+          type: int
+          description: >
+            Nodes process open file descriptors max.
+
+        - name: avg
+          path: cluster_stats.nodes.process.open_file_descriptors.avg
+          type: int
+          description: >
+            Nodes process open file descriptors avg.
+
+        - name: max_uptime_in_millis
+          path: cluster_stats.nodes.jvm.max_uptime_in_millis
+          type: int
+          description: >
+            Nodes jvm max uptime in millis.
+
+        - name: heap_used_in_bytes
+          path: cluster_stats.nodes.jvm.mem.heap_used_in_bytes
+          type: int
+          description: >
+            Nodes jvm mem heap used in bytes.
+
+        - name: heap_max_in_bytes
+          path: cluster_stats.nodes.jvm.mem.heap_max_in_bytes
+          type: int
+          description: >
+            Nodes jvm mem heap max in bytes.
+
+        - name: threads
+          path: cluster_stats.nodes.jvm.threads
+          type: int
+          description: >
+            Nodes jvm threads.
+
+        - name: total_in_bytes
+          path: cluster_stats.nodes.fs.total_in_bytes
+          type: int
+          description: >
+            Nodes fs total in bytes.
+
+        - name: free_in_bytes
+          path: cluster_stats.nodes.fs.free_in_bytes
+          type: int
+          description: >
+            Nodes fs free in bytes.
+
+        - name: available_in_bytes
+          path: cluster_stats.nodes.fs.available_in_bytes
+          type: int
+          description: >
+            Nodes fs available in bytes.
+
+        - name: spins
+          path: cluster_stats.nodes.fs.spins
+          type: int
+          description: >
+            Nodes fs spins.
