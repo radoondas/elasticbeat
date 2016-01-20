@@ -6,12 +6,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 type ClusterHealth struct {
 	Cluster_name                     string  `json:"cluster_name"`
 	Status                           string  `json:"status"`
+	Status_num                       int64   `json:"status_num"`
 	Timed_out                        bool    `json:"timed_out"`
 	Number_of_nodes                  uint64  `json:"number_of_nodes"`
 	Number_of_data_nodes             uint64  `json:"number_of_data_nodes"`
@@ -170,6 +170,7 @@ func (eb *Elasticbeat) GetCLusterHealth(u url.URL) (ClusterHealth, error) {
 	if err != nil {
 		return health, err
 	}
+	health.Status_num = GetNumericalClusterStatus(health.Status)
 
 	return health, nil
 }
@@ -197,16 +198,7 @@ func (eb *Elasticbeat) GetCLusterStats(u url.URL) (ClusterStats, error) {
 		return stats, err
 	}
 
-	// numeric interpretations of cluster health status
-	if strings.EqualFold(stats.Status, "green") {
-		stats.Status_num = 2
-	} else if strings.EqualFold(stats.Status, "yellow") {
-		stats.Status_num = 1
-	} else if strings.EqualFold(stats.Status, "red") {
-		stats.Status_num = 0
-	} else {
-		stats.Status_num = -1
-	}
+	stats.Status_num = GetNumericalClusterStatus(stats.Status)
 
 	return stats, nil
 }

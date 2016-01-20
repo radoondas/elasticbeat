@@ -69,6 +69,12 @@ cluster_health:
           description: >
             Cluster status.
 
+        - name: status_num
+          path: status_num
+          type: int
+          description: >
+            Cluster status - numerical.
+
         - name: timed_out
           path: timed_out
           type: bool
