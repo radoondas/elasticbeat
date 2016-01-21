@@ -11,7 +11,9 @@ import yaml
 
 SECTIONS = [
   ("env", "Common"),
-  ("apache_status", "Apache HTTPD server-status metrics")]
+  ("cluster_health", "Contains elasticsearch cluster health statistics"),
+  ("cluster_stats", "Contains elasticsearch cluster stats statistics"),
+  ("cluster_node", "Contains elasticsearch node stats statistics")]
 
 
 def document_fields(output, section):

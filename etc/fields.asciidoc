@@ -1,0 +1,1946 @@
+
+////
+This file is generated! See etc/fields.yml and scripts/generate_field_docs.py
+////
+
+[[exported-fields]]
+== Exported Fields
+
+This document describes the fields that are exported by
+ApacheBeat. They are grouped in the
+following categories:
+
+* <<exported-fields-env>>
+* <<exported-fields-cluster_health>>
+* <<exported-fields-cluster_stats>>
+* <<exported-fields-cluster_node>>
+
+[[exported-fields-env]]
+=== Common Fields
+
+Contains common fields available in all event types.
+
+
+
+==== @timestamp
+
+type: date
+
+example: 2015-01-24 14:06:05.071000
+
+format: YYYY-MM-DDTHH:MM:SS.milliZ
+
+required: True
+
+The timestamp of when the measurements were taken. The precision is in milliseconds. The timezone is UTC.
+
+
+==== type
+
+required: True
+
+Set to appropriate elasticsearch cluster, cluster health or nodes statistics
+
+
+==== count
+
+type: int
+
+required: True
+
+The number of transactions that this event represents. This is generally the inverse of the sampling rate. For example, for a sample rate of 1/10, the count is 10. The count is used by the UIs to return estimated values. Reserved for future usage.
+
+
+==== beat.name
+
+Name of the Beat sending the events. If the shipper name is set in the configuration file, then that value is used. If it is not set, the hostname is used.
+
+
+==== beat.hostname
+
+The hostname as returned by the operating system on which the Beat is running.
+
+
+[[exported-fields-cluster_health]]
+=== Contains elasticsearch cluster health statistics Fields
+
+Contains elasticsearch cluster health statistics.
+
+
+
+[[exported-fields-cluster_health]]
+=== Contains elasticsearch cluster health statistics Fields
+
+Contains elasticsearch cluster health statistics.
+
+
+
+==== cluster_name
+
+type: string
+
+Cluster name.
+
+
+==== status
+
+type: string
+
+Cluster status.
+
+
+==== status_num
+
+type: int
+
+Cluster status - numerical.
+
+
+==== timed_out
+
+type: bool
+
+Timed out.
+
+
+==== number_of_nodes
+
+type: int
+
+Number of nodes in cluster.
+
+
+==== number_of_data_nodes
+
+type: int
+
+Number of data nodes in cluster.
+
+
+==== active_primary_shards
+
+type: int
+
+Number of active primary shards.
+
+
+==== active_shards
+
+type: int
+
+Number of active shards.
+
+
+==== relocating_shards
+
+type: int
+
+Number of relocating shards.
+
+
+==== intializing_shards
+
+type: int
+
+Number of initializing shards.
+
+
+==== unassigned_shards
+
+type: int
+
+Number of unassigned shards.
+
+
+==== delayed_unassigned_shards
+
+type: int
+
+Number of delayed unassigned shards.
+
+
+==== number_of_pending_tasks
+
+type: int
+
+Number of pending tasks.
+
+
+==== number_of_in_flight_fetch
+
+type: int
+
+Number of in flight fetch.
+
+
+==== task_max_waiting_in_queue_millis
+
+type: int
+
+Task max waiting in queue millis.
+
+
+==== cluster_health.active_shards_percent_as_number
+
+type: float
+
+Active shards percent as number.
+
+
+[[exported-fields-cluster_stats]]
+=== Contains elasticsearch cluster stats statistics Fields
+
+Contains elasticsearch cluster stats statistics.
+
+
+
+[[exported-fields-cluster_stats]]
+=== Contains elasticsearch cluster stats statistics Fields
+
+Contains elasticsearch cluster stats statistics.
+
+
+
+==== timestamp
+
+type: int
+
+Timestamp.
+
+
+==== cluster_name
+
+type: string
+
+Cluster name.
+
+
+==== status
+
+type: string
+
+Cluster status.
+
+
+==== status_num
+
+type: int
+
+Cluster status - numerical.
+
+
+==== cluster_stats.indices.count
+
+type: int
+
+Indices count.
+
+
+==== cluster_stats.indices.shards.total
+
+type: int
+
+Total shards.
+
+
+==== cluster_stats.indices.shards.primaries
+
+type: int
+
+Shards primaries.
+
+
+==== cluster_stats.indices.shards.replication
+
+type: float
+
+Shards replication.
+
+
+==== cluster_stats.indices.shards.index.shards.min
+
+type: float
+
+Shards index shards min.
+
+
+==== cluster_stats.indices.shards.index.shards.max
+
+type: float
+
+Shards index shards max.
+
+
+==== cluster_stats.indices.shards.index.shards.avg
+
+type: float
+
+Shards index shards avg.
+
+
+==== cluster_stats.indices.shards.index.primaries.min
+
+type: float
+
+Shards primaries shards min.
+
+
+==== cluster_stats.indices.shards.index.primaries.max
+
+type: float
+
+Shards primaries shards max.
+
+
+==== cluster_stats.indices.shards.index.primaries.avg
+
+type: float
+
+Shards primaries shards avg.
+
+
+==== cluster_stats.indices.shards.index.replication.min
+
+type: float
+
+Shards replication shards min.
+
+
+==== cluster_stats.indices.shards.index.replication.max
+
+type: float
+
+Shards replication shards max.
+
+
+==== cluster_stats.indices.shards.index.replication.avg
+
+type: float
+
+Shards replication shards avg.
+
+
+==== cluster_stats.indices.docs.count
+
+type: int
+
+Indices docs count.
+
+
+==== cluster_stats.indices.docs.deleted
+
+type: int
+
+Indices docs deleted.
+
+
+==== cluster_stats.indices.store.size_in_bytes
+
+type: int
+
+Indices store size in bytes.
+
+
+==== cluster_stats.indices.store.throttle_time_in_millis
+
+type: int
+
+Indices store throttle time in millis.
+
+
+==== cluster_stats.indices.fielddata.memory_size_in_bytes
+
+type: int
+
+Indices fielddata memory size in bytes.
+
+
+==== cluster_stats.indices.fielddata.evictions
+
+type: int
+
+Indices fielddata evictions.
+
+
+==== cluster_stats.indices.query_cache.memory_size_in_bytes
+
+type: int
+
+Indices query cache memory size in bytes.
+
+
+==== cluster_stats.indices.query_cache.total_count
+
+type: int
+
+Indices query cache total count.
+
+
+==== cluster_stats.indices.query_cache.hit_count
+
+type: int
+
+Indices query cache hit count.
+
+
+==== cluster_stats.indices.query_cache.miss_count
+
+type: int
+
+Indices query cache miss count.
+
+
+==== cluster_stats.indices.query_cache.cache_size
+
+type: int
+
+Indices query cache cache size.
+
+
+==== cluster_stats.indices.query_cache.cache_count
+
+type: int
+
+Indices query cache cache count.
+
+
+==== cluster_stats.indices.query_cache.evictions
+
+type: int
+
+Indices query cache evictions.
+
+
+==== cluster_stats.indices.completion.size_in_bytes
+
+type: int
+
+Indices completion size in bytes.
+
+
+==== cluster_stats.indices.segments.count
+
+type: int
+
+Indices segments count.
+
+
+==== cluster_stats.indices.segments.memory_in_bytes
+
+type: int
+
+Indices segments memory in bytes.
+
+
+==== cluster_stats.indices.segments.terms_memory_in_bytes
+
+type: int
+
+Indices segments terms memory in bytes.
+
+
+==== cluster_stats.indices.segments.stored_fields_memory_in_bytes
+
+type: int
+
+Indices segments stored fields memory in bytes.
+
+
+==== cluster_stats.indices.segments.term_vectors_memory_in_bytes
+
+type: int
+
+Indices segments term vectors memory in bytes.
+
+
+==== cluster_stats.indices.segments.norms_memory_in_bytes
+
+type: int
+
+Indices segments norms memory in bytes.
+
+
+==== cluster_stats.indices.segments.doc_values_memory_in_bytes
+
+type: int
+
+Indices segments doc values memory in bytes.
+
+
+==== cluster_stats.indices.segments.index_writer_memory_in_bytes
+
+type: int
+
+Indices segments index writer memory in bytes.
+
+
+==== cluster_stats.indices.segments.index_writer_max_memory_in_bytes
+
+type: int
+
+Indices segments index writer max memory in bytes.
+
+
+==== cluster_stats.indices.segments.version_map_memory_in_bytes
+
+type: int
+
+Indices segments version map memory in bytes.
+
+
+==== cluster_stats.indices.percolate.total
+
+type: int
+
+Indices percolate total.
+
+
+==== cluster_stats.indices.percolate.time_in_millis
+
+type: int
+
+Indices percolate time in millis.
+
+
+==== cluster_stats.indices.percolate.current
+
+type: int
+
+Indices percolate current.
+
+
+==== cluster_stats.indices.percolate.memory_size_in_bytes
+
+type: int
+
+Indices percolate memory size in bytes.
+
+
+==== cluster_stats.indices.percolate.memory_size
+
+type: string
+
+Indices percolate memory size.
+
+
+==== cluster_stats.indices.percolate.queries
+
+type: int
+
+Indices percolate queries.
+
+
+==== cluster_stats.nodes.count.total
+
+type: int
+
+Nodes count total.
+
+
+==== cluster_stats.nodes.count.master_only
+
+type: int
+
+Nodes count master only.
+
+
+==== cluster_stats.nodes.count.data_only
+
+type: int
+
+Nodes count data only.
+
+
+==== cluster_stats.nodes.count.master_data
+
+type: int
+
+Nodes count master data.
+
+
+==== cluster_stats.nodes.count.client
+
+type: int
+
+Nodes count client.
+
+
+==== cluster_stats.nodes.os.available_processors
+
+type: int
+
+Nodes os available processors.
+
+
+==== cluster_stats.nodes.os.allocated_processors
+
+type: int
+
+Nodes os allocated processors.
+
+
+==== cluster_stats.nodes.os.mem.total_in_bytes
+
+type: int
+
+Nodes os mem total in bytes.
+
+
+==== cluster_stats.nodes.process.cpu.percent
+
+type: int
+
+Nodes process cpu percent.
+
+
+==== cluster_stats.nodes.process.open_file_descriptors.min
+
+type: int
+
+Nodes process open file descriptors min.
+
+
+==== cluster_stats.nodes.process.open_file_descriptors.max
+
+type: int
+
+Nodes process open file descriptors max.
+
+
+==== cluster_stats.nodes.process.open_file_descriptors.avg
+
+type: int
+
+Nodes process open file descriptors avg.
+
+
+==== cluster_stats.nodes.jvm.max_uptime_in_millis
+
+type: int
+
+Nodes jvm max uptime in millis.
+
+
+==== cluster_stats.nodes.jvm.mem.heap_used_in_bytes
+
+type: int
+
+Nodes jvm mem heap used in bytes.
+
+
+==== cluster_stats.nodes.jvm.mem.heap_max_in_bytes
+
+type: int
+
+Nodes jvm mem heap max in bytes.
+
+
+==== cluster_stats.nodes.jvm.threads
+
+type: int
+
+Nodes jvm threads.
+
+
+==== cluster_stats.nodes.fs.total_in_bytes
+
+type: int
+
+Nodes fs total in bytes.
+
+
+==== cluster_stats.nodes.fs.free_in_bytes
+
+type: int
+
+Nodes fs free in bytes.
+
+
+==== cluster_stats.nodes.fs.available_in_bytes
+
+type: int
+
+Nodes fs available in bytes.
+
+
+==== cluster_stats.nodes.fs.spins
+
+type: int
+
+Nodes fs spins.
+
+
+[[exported-fields-cluster_node]]
+=== Contains elasticsearch node stats statistics Fields
+
+Contains elasticsearch node stats statistics.
+
+
+
+[[exported-fields-cluster_node]]
+=== Contains elasticsearch node stats statistics Fields
+
+Contains elasticsearch node stats statistics.
+
+
+
+==== timestamp
+
+type: int
+
+Timestamp.
+
+
+==== name
+
+type: string
+
+Node name.
+
+
+==== host
+
+type: string
+
+Host.
+
+
+==== cluster_name
+
+type: string
+
+Cluster name.
+
+
+==== cluster_node.os.timestamp
+
+type: int
+
+Timestamp.
+
+
+==== cluster_node.os.load_average
+
+type: float
+
+OS load average.
+
+
+==== cluster_node.os.mem.total_in_bytes
+
+type: int
+
+OS memory total in bytes.
+
+
+==== cluster_node.os.mem.free_in_bytes
+
+type: int
+
+OS memory free in bytes.
+
+
+==== cluster_node.os.mem.used_in_bytes
+
+type: int
+
+OS memory used in bytes.
+
+
+==== cluster_node.os.mem.free_percent
+
+type: int
+
+OS memory free percent.
+
+
+==== cluster_node.os.mem.used_percent
+
+type: int
+
+OS memory used percent.
+
+
+==== cluster_node.os.swap.total_in_bytes
+
+type: int
+
+OS memory total in bytes.
+
+
+==== cluster_node.os.swap.free_in_bytes
+
+type: int
+
+OS memory free in bytes.
+
+
+==== cluster_node.os.swap.used_in_bytes
+
+type: int
+
+OS memory used in bytes.
+
+
+==== cluster_node.process.timestamp
+
+type: int
+
+Process timestamp.
+
+
+==== cluster_node.process.open_file_descriptors
+
+type: int
+
+Process open file descriptors.
+
+
+==== cluster_node.process.max_file_descriptors
+
+type: int
+
+Process max file descriptors.
+
+
+==== cluster_node.process.cpu.percent
+
+type: int
+
+Process cpu percent.
+
+
+==== cluster_node.process.cpu.total_in_millis
+
+type: int
+
+Process cpu total in millis.
+
+
+==== cluster_node.process.mem.total_virtual_in_bytes
+
+type: int
+
+Process mem total virtual in bytes.
+
+
+==== cluster_node.jvm.timestamp
+
+type: int
+
+JVM timestamp.
+
+
+==== cluster_node.jvm.uptime_in_millis
+
+type: int
+
+JVM uptime in millis.
+
+
+==== cluster_node.jvm.mem.heap_used_in_bytes
+
+type: int
+
+JVM memory heap used in bytes.
+
+
+==== cluster_node.jvm.mem.heap_used_percent
+
+type: int
+
+JVM memory heap used percent.
+
+
+==== cluster_node.jvm.mem.heap_committed_in_bytes
+
+type: int
+
+JVM memory heap committed in bytes.
+
+
+==== cluster_node.jvm.mem.heap_max_in_bytes
+
+type: int
+
+JVM memory heap max in bytes.
+
+
+==== cluster_node.jvm.mem.non_heap_used_in_bytes
+
+type: int
+
+JVM memory non heap used in bytes.
+
+
+==== cluster_node.jvm.mem.non_heap_committed_in_bytes
+
+type: int
+
+JVM memory non heap committed in bytes.
+
+
+==== cluster_node.jvm.mem.pools.young.used_in_bytes
+
+type: int
+
+JVM memory pools young used in bytes.
+
+
+==== cluster_node.jvm.mem.pools.young.max_in_bytes
+
+type: int
+
+JVM memory pools young max in bytes.
+
+
+==== cluster_node.jvm.mem.pools.young.peak_used_in_bytes
+
+type: int
+
+JVM memory pools young peak used in bytes.
+
+
+==== cluster_node.jvm.mem.pools.young.peak_max_in_bytes
+
+type: int
+
+JVM memory pools young peak max in bytes.
+
+
+==== cluster_node.jvm.mem.pools.survivor.used_in_bytes
+
+type: int
+
+JVM memory pools survivor used in bytes.
+
+
+==== cluster_node.jvm.mem.pools.survivor.max_in_bytes
+
+type: int
+
+JVM memory pools survivor max in bytes.
+
+
+==== cluster_node.jvm.mem.pools.survivor.peak_used_in_bytes
+
+type: int
+
+JVM memory pools survivor peak used in bytes.
+
+
+==== cluster_node.jvm.mem.pools.survivor.peak_max_in_bytes
+
+type: int
+
+JVM memory pools survivor peak max in bytes.
+
+
+==== cluster_node.jvm.mem.pools.old.used_in_bytes
+
+type: int
+
+JVM memory pools old used in bytes.
+
+
+==== cluster_node.jvm.mem.pools.old.max_in_bytes
+
+type: int
+
+JVM memory pools old max in bytes.
+
+
+==== cluster_node.jvm.mem.pools.old.peak_used_in_bytes
+
+type: int
+
+JVM memory pools old peak used in bytes.
+
+
+==== cluster_node.jvm.mem.pools.old.peak_max_in_bytes
+
+type: int
+
+JVM memory pools old peak max in bytes.
+
+
+==== cluster_node.jvm.threads.count
+
+type: int
+
+JVM threads count.
+
+
+==== cluster_node.jvm.threads.peak_count
+
+type: int
+
+JVM threads peak count.
+
+
+==== cluster_node.jvm.gc.collectors.young.collection_count
+
+type: int
+
+JVM gc collectors young collection count.
+
+
+==== cluster_node.jvm.gc.collectors.young.collection_time_in_millis
+
+type: int
+
+JVM gc collectors young collection time in millis.
+
+
+==== cluster_node.jvm.gc.collectors.old.collection_count
+
+type: int
+
+JVM gc collectors old collection count.
+
+
+==== cluster_node.jvm.gc.collectors.old.collection_time_in_millis
+
+type: int
+
+JVM gc collectors old collection time in millis.
+
+
+==== cluster_node.jvm.buffer_pools.direct.count
+
+type: int
+
+JVM buffer pools direct count.
+
+
+==== cluster_node.jvm.buffer_pools.direct.used_in_bytes
+
+type: int
+
+JVM buffer pools direct used in bytes.
+
+
+==== cluster_node.jvm.buffer_pools.direct.total_capacity_in_bytes
+
+type: int
+
+JVM buffer pools direct total capacity in bytes.
+
+
+==== cluster_node.jvm.buffer_pools.mapped.count
+
+type: int
+
+JVM buffer pools mapped count.
+
+
+==== cluster_node.jvm.buffer_pools.mapped.used_in_bytes
+
+type: int
+
+JVM buffer pools mapped used in bytes.
+
+
+==== cluster_node.jvm.buffer_pools.mapped.total_capacity_in_bytes
+
+type: int
+
+JVM buffer pools mapped total capacity in bytes.
+
+
+==== cluster_node.thread_pool.bulk.threads
+
+type: int
+
+Thread pool bulk threads.
+
+
+==== cluster_node.thread_pool.bulk.queue
+
+type: int
+
+Thread pool bulk queue.
+
+
+==== cluster_node.thread_pool.bulk.active
+
+type: int
+
+Thread pool bulk active.
+
+
+==== cluster_node.thread_pool.bulk.rejected
+
+type: int
+
+Thread pool bulk rejected.
+
+
+==== cluster_node.thread_pool.bulk.largest
+
+type: int
+
+Thread pool bulk largest.
+
+
+==== cluster_node.thread_pool.bulk.completed
+
+type: int
+
+Thread pool bulk completed.
+
+
+==== cluster_node.thread_pool.fetch_shard_started.threads
+
+type: int
+
+Thread pool fetch shard started threads.
+
+
+==== cluster_node.thread_pool.fetch_shard_started.queue
+
+type: int
+
+Thread pool fetch shard started queue.
+
+
+==== cluster_node.thread_pool.fetch_shard_started.active
+
+type: int
+
+Thread pool fetch shard started active.
+
+
+==== cluster_node.thread_pool.fetch_shard_started.rejected
+
+type: int
+
+Thread pool fetch shard started rejected.
+
+
+==== cluster_node.thread_pool.fetch_shard_started.largest
+
+type: int
+
+Thread pool fetch shard started largest.
+
+
+==== cluster_node.thread_pool.fetch_shard_started.completed
+
+type: int
+
+Thread pool fetch shard started completed.
+
+
+==== cluster_node.thread_pool.fetch_shard_store.threads
+
+type: int
+
+Thread pool fetch shard store threads.
+
+
+==== cluster_node.thread_pool.fetch_shard_store.queue
+
+type: int
+
+Thread pool fetch shard store queue.
+
+
+==== cluster_node.thread_pool.fetch_shard_store.active
+
+type: int
+
+Thread pool fetch shard store active.
+
+
+==== cluster_node.thread_pool.fetch_shard_store.rejected
+
+type: int
+
+Thread pool fetch shard store rejected.
+
+
+==== cluster_node.thread_pool.fetch_shard_store.largest
+
+type: int
+
+Thread pool fetch shard store largest.
+
+
+==== cluster_node.thread_pool.fetch_shard_store.completed
+
+type: int
+
+Thread pool fetch shard store completed.
+
+
+==== cluster_node.thread_pool.flush.threads
+
+type: int
+
+Thread pool flush threads.
+
+
+==== cluster_node.thread_pool.flush.queue
+
+type: int
+
+Thread pool flush queue.
+
+
+==== cluster_node.thread_pool.flush.active
+
+type: int
+
+Thread pool flush active.
+
+
+==== cluster_node.thread_pool.flush.rejected
+
+type: int
+
+Thread pool flush rejected.
+
+
+==== cluster_node.thread_pool.flush.largest
+
+type: int
+
+Thread pool flush largest.
+
+
+==== cluster_node.thread_pool.flush.completed
+
+type: int
+
+Thread pool flush completed.
+
+
+==== cluster_node.thread_pool.force_merge.threads
+
+type: int
+
+Thread pool force merge threads.
+
+
+==== cluster_node.thread_pool.force_merge.queue
+
+type: int
+
+Thread pool force merge queue.
+
+
+==== cluster_node.thread_pool.force_merge.active
+
+type: int
+
+Thread pool force merge active.
+
+
+==== cluster_node.thread_pool.force_merge.rejected
+
+type: int
+
+Thread pool force merge rejected.
+
+
+==== cluster_node.thread_pool.force_merge.largest
+
+type: int
+
+Thread pool force merge largest.
+
+
+==== cluster_node.thread_pool.force_merge.completed
+
+type: int
+
+Thread pool force merge completed.
+
+
+==== cluster_node.thread_pool.generic.threads
+
+type: int
+
+Thread pool generic threads.
+
+
+==== cluster_node.thread_pool.generic.queue
+
+type: int
+
+Thread pool generic queue.
+
+
+==== cluster_node.thread_pool.generic.active
+
+type: int
+
+Thread pool generic active.
+
+
+==== cluster_node.thread_pool.generic.rejected
+
+type: int
+
+Thread pool generic rejected.
+
+
+==== cluster_node.thread_pool.generic.largest
+
+type: int
+
+Thread pool generic largest.
+
+
+==== cluster_node.thread_pool.generic.completed
+
+type: int
+
+Thread pool generic completed.
+
+
+==== cluster_node.thread_pool.get.threads
+
+type: int
+
+Thread pool get threads.
+
+
+==== cluster_node.thread_pool.get.queue
+
+type: int
+
+Thread pool get queue.
+
+
+==== cluster_node.thread_pool.get.active
+
+type: int
+
+Thread pool get active.
+
+
+==== cluster_node.thread_pool.get.rejected
+
+type: int
+
+Thread pool get rejected.
+
+
+==== cluster_node.thread_pool.get.largest
+
+type: int
+
+Thread pool get largest.
+
+
+==== cluster_node.thread_pool.get.completed
+
+type: int
+
+Thread pool get completed.
+
+
+==== cluster_node.thread_pool.index.threads
+
+type: int
+
+Thread pool index threads.
+
+
+==== cluster_node.thread_pool.index.queue
+
+type: int
+
+Thread pool index queue.
+
+
+==== cluster_node.thread_pool.index.active
+
+type: int
+
+Thread pool index active.
+
+
+==== cluster_node.thread_pool.index.rejected
+
+type: int
+
+Thread pool index rejected.
+
+
+==== cluster_node.thread_pool.index.largest
+
+type: int
+
+Thread pool index largest.
+
+
+==== cluster_node.thread_pool.index.completed
+
+type: int
+
+Thread pool index completed.
+
+
+==== cluster_node.thread_pool.listener.threads
+
+type: int
+
+Thread pool listener threads.
+
+
+==== cluster_node.thread_pool.listener.queue
+
+type: int
+
+Thread pool listener queue.
+
+
+==== cluster_node.thread_pool.listener.active
+
+type: int
+
+Thread pool listener active.
+
+
+==== cluster_node.thread_pool.listener.rejected
+
+type: int
+
+Thread pool listener rejected.
+
+
+==== cluster_node.thread_pool.listener.largest
+
+type: int
+
+Thread pool listener largest.
+
+
+==== cluster_node.thread_pool.listener.completed
+
+type: int
+
+Thread pool listener completed.
+
+
+==== cluster_node.thread_pool.management.threads
+
+type: int
+
+Thread pool management threads.
+
+
+==== cluster_node.thread_pool.management.queue
+
+type: int
+
+Thread pool management queue.
+
+
+==== cluster_node.thread_pool.management.active
+
+type: int
+
+Thread pool management active.
+
+
+==== cluster_node.thread_pool.management.rejected
+
+type: int
+
+Thread pool management rejected.
+
+
+==== cluster_node.thread_pool.management.largest
+
+type: int
+
+Thread pool management largest.
+
+
+==== cluster_node.thread_pool.management.completed
+
+type: int
+
+Thread pool management completed.
+
+
+==== cluster_node.thread_pool.percolate.threads
+
+type: int
+
+Thread pool percolate threads.
+
+
+==== cluster_node.thread_pool.percolate.queue
+
+type: int
+
+Thread pool percolate queue.
+
+
+==== cluster_node.thread_pool.percolate.active
+
+type: int
+
+Thread pool percolate active.
+
+
+==== cluster_node.thread_pool.percolate.rejected
+
+type: int
+
+Thread pool percolate rejected.
+
+
+==== cluster_node.thread_pool.percolate.largest
+
+type: int
+
+Thread pool percolate largest.
+
+
+==== cluster_node.thread_pool.percolate.completed
+
+type: int
+
+Thread pool percolate completed.
+
+
+==== cluster_node.thread_pool.refresh.threads
+
+type: int
+
+Thread pool refresh threads.
+
+
+==== cluster_node.thread_pool.refresh.queue
+
+type: int
+
+Thread pool refresh queue.
+
+
+==== cluster_node.thread_pool.refresh.active
+
+type: int
+
+Thread pool refresh active.
+
+
+==== cluster_node.thread_pool.refresh.rejected
+
+type: int
+
+Thread pool refresh rejected.
+
+
+==== cluster_node.thread_pool.refresh.largest
+
+type: int
+
+Thread pool refresh largest.
+
+
+==== cluster_node.thread_pool.refresh.completed
+
+type: int
+
+Thread pool refresh completed.
+
+
+==== cluster_node.thread_pool.search.threads
+
+type: int
+
+Thread pool search threads.
+
+
+==== cluster_node.thread_pool.search.queue
+
+type: int
+
+Thread pool search queue.
+
+
+==== cluster_node.thread_pool.search.active
+
+type: int
+
+Thread pool search active.
+
+
+==== cluster_node.thread_pool.search.rejected
+
+type: int
+
+Thread pool search rejected.
+
+
+==== cluster_node.thread_pool.search.largest
+
+type: int
+
+Thread pool search largest.
+
+
+==== cluster_node.thread_pool.search.completed
+
+type: int
+
+Thread pool search completed.
+
+
+==== cluster_node.thread_pool.snapshot.threads
+
+type: int
+
+Thread pool snapshot threads.
+
+
+==== cluster_node.thread_pool.snapshot.queue
+
+type: int
+
+Thread pool snapshot queue.
+
+
+==== cluster_node.thread_pool.snapshot.active
+
+type: int
+
+Thread pool snapshot active.
+
+
+==== cluster_node.thread_pool.snapshot.rejected
+
+type: int
+
+Thread pool snapshot rejected.
+
+
+==== cluster_node.thread_pool.snapshot.largest
+
+type: int
+
+Thread pool snapshot largest.
+
+
+==== cluster_node.thread_pool.snapshot.completed
+
+type: int
+
+Thread pool snapshot completed.
+
+
+==== cluster_node.thread_pool.suggest.threads
+
+type: int
+
+Thread pool suggest threads.
+
+
+==== cluster_node.thread_pool.suggest.queue
+
+type: int
+
+Thread pool suggest queue.
+
+
+==== cluster_node.thread_pool.suggest.active
+
+type: int
+
+Thread pool suggest active.
+
+
+==== cluster_node.thread_pool.suggest.rejected
+
+type: int
+
+Thread pool suggest rejected.
+
+
+==== cluster_node.thread_pool.suggest.largest
+
+type: int
+
+Thread pool suggest largest.
+
+
+==== cluster_node.thread_pool.suggest.completed
+
+type: int
+
+Thread pool suggest completed.
+
+
+==== cluster_node.thread_pool.warmer.threads
+
+type: int
+
+Thread pool warmer threads.
+
+
+==== cluster_node.thread_pool.warmer.queue
+
+type: int
+
+Thread pool warmer queue.
+
+
+==== cluster_node.thread_pool.warmer.active
+
+type: int
+
+Thread pool warmer active.
+
+
+==== cluster_node.thread_pool.warmer.rejected
+
+type: int
+
+Thread pool warmer rejected.
+
+
+==== cluster_node.thread_pool.warmer.largest
+
+type: int
+
+Thread pool warmer largest.
+
+
+==== cluster_node.thread_pool.warmer.completed
+
+type: int
+
+Thread pool warmer completed.
+
+
+==== cluster_node.fs.timestamp
+
+type: int
+
+Fs timestamp.
+
+
+==== cluster_node.fs.total.total_in_bytes
+
+type: int
+
+Fs total total in bytes.
+
+
+==== cluster_node.fs.total.free_in_bytes
+
+type: int
+
+Fs total free in bytes.
+
+
+==== cluster_node.fs.total.available_in_bytes
+
+type: int
+
+Fs total available in bytes.
+
+
+==== cluster_node.fs.total.spins
+
+type: string
+
+Fs total spins.
+
+
+==== cluster_node.transport.server_open
+
+type: int
+
+Transport server open.
+
+
+==== cluster_node.transport.rx_count
+
+type: int
+
+Transport rx count.
+
+
+==== cluster_node.transport.rx_size_in_bytes
+
+type: int
+
+Transport rx size in bytes.
+
+
+==== cluster_node.transport.tx_count
+
+type: int
+
+Transport tx count.
+
+
+==== cluster_node.transport.tx_size_in_bytes
+
+type: int
+
+Transport tx size in bytes.
+
+
+==== cluster_node.http.current_open
+
+type: int
+
+Http current open.
+
+
+==== cluster_node.http.total_opened
+
+type: int
+
+Http total opened.
+
+
+==== cluster_node.breakers.request.limit_size_in_bytes
+
+type: int
+
+Breakers request limit size in bytes.
+
+
+==== cluster_node.breakers.request.limit_size
+
+type: string
+
+Breakers request limit size.
+
+
+==== cluster_node.breakers.request.estimated_size_in_bytes
+
+type: int
+
+Breakers request estimated size in bytes.
+
+
+==== cluster_node.breakers.request.estimated_size
+
+type: string
+
+Breakers request estimated size.
+
+
+==== cluster_node.breakers.request.overhead
+
+type: float
+
+Breakers request overhead.
+
+
+==== cluster_node.breakers.request.tripped
+
+type: int
+
+Breakers request tripped.
+
+
+==== cluster_node.breakers.fielddata.limit_size_in_bytes
+
+type: int
+
+Breakers fielddata limit size in bytes.
+
+
+==== cluster_node.breakers.fielddata.limit_size
+
+type: string
+
+Breakers fielddata limit size.
+
+
+==== cluster_node.breakers.fielddata.estimated_size_in_bytes
+
+type: int
+
+Breakers fielddata estimated size in bytes.
+
+
+==== cluster_node.breakers.fielddata.estimated_size
+
+type: string
+
+Breakers fielddata estimated size.
+
+
+==== cluster_node.breakers.fielddata.overhead
+
+type: float
+
+Breakers fielddata overhead.
+
+
+==== cluster_node.breakers.fielddata.tripped
+
+type: int
+
+Breakers fielddata tripped.
+
+
+==== cluster_node.breakers.parent.limit_size_in_bytes
+
+type: int
+
+Breakers parent limit size in bytes.
+
+
+==== cluster_node.breakers.parent.limit_size
+
+type: string
+
+Breakers parent limit size.
+
+
+==== cluster_node.breakers.parent.estimated_size_in_bytes
+
+type: int
+
+Breakers parent estimated size in bytes.
+
+
+==== cluster_node.breakers.parent.estimated_size
+
+type: string
+
+Breakers parent estimated size.
+
+
+==== cluster_node.breakers.parent.overhead
+
+type: float
+
+Breakers parent overhead.
+
+
+==== cluster_node.breakers.parent.tripped
+
+type: int
+
+Breakers parent tripped.
+
+
+==== cluster_node.script.compilations
+
+type: int
+
+Script compilations.
+
+
+==== cluster_node.script.cache_evictions
+
+type: int
+
+Script cache_evictions.
+
+
