@@ -565,3 +565,1093 @@ cluster_stats:
           type: int
           description: >
             Nodes fs spins.
+cluster_node:
+  type: group
+  description: >
+      Contains elasticsearch node stats statistics.
+  fields:
+    - name: cluster_node
+      type: group
+      description: >
+         Contains elasticsearch node stats statistics.
+
+      fields:
+        - name: timestamp
+          path: timestamp
+          type: int
+          description: >
+            Timestamp.
+
+        - name: name
+          path: name
+          type: string
+          description: >
+            Node name.
+
+        - name: host
+          path: host
+          type: string
+          description: >
+            Host.
+
+        - name: cluster_name
+          path: cluster_name
+          type: string
+          description: >
+            Cluster name.
+
+        - name: timestamp
+          path: cluster_node.os.timestamp
+          type: int
+          description: >
+            Timestamp.
+
+        - name: load_average
+          path: cluster_node.os.load_average
+          type: float
+          description: >
+            OS load average.
+
+        - name: total_in_bytes
+          path: cluster_node.os.mem.total_in_bytes
+          type: int
+          description: >
+            OS memory total in bytes.
+
+        - name: free_in_bytes
+          path: cluster_node.os.mem.free_in_bytes
+          type: int
+          description: >
+            OS memory free in bytes.
+
+        - name: used_in_bytes
+          path: cluster_node.os.mem.used_in_bytes
+          type: int
+          description: >
+            OS memory used in bytes.
+
+        - name: free_percent
+          path: cluster_node.os.mem.free_percent
+          type: int
+          description: >
+            OS memory free percent.
+
+        - name: used_percent
+          path: cluster_node.os.mem.used_percent
+          type: int
+          description: >
+            OS memory used percent.
+
+        - name: total_in_bytes
+          path: cluster_node.os.swap.total_in_bytes
+          type: int
+          description: >
+            OS memory total in bytes.
+
+        - name: free_in_bytes
+          path: cluster_node.os.swap.free_in_bytes
+          type: int
+          description: >
+            OS memory free in bytes.
+
+        - name: used_in_bytes
+          path: cluster_node.os.swap.used_in_bytes
+          type: int
+          description: >
+            OS memory used in bytes.
+
+        - name: timestamp
+          path: cluster_node.process.timestamp
+          type: int
+          description: >
+            Process timestamp.
+
+        - name: open_file_descriptors
+          path: cluster_node.process.open_file_descriptors
+          type: int
+          description: >
+            Process open file descriptors.
+
+        - name: max_file_descriptors
+          path: cluster_node.process.max_file_descriptors
+          type: int
+          description: >
+            Process max file descriptors.
+
+        - name: percent
+          path: cluster_node.process.cpu.percent
+          type: int
+          description: >
+            Process cpu percent.
+
+        - name: total_in_millis
+          path: cluster_node.process.cpu.total_in_millis
+          type: int
+          description: >
+            Process cpu total in millis.
+
+        - name: total_virtual_in_bytes
+          path: cluster_node.process.mem.total_virtual_in_bytes
+          type: int
+          description: >
+            Process mem total virtual in bytes.
+
+        - name: timestamp
+          path: cluster_node.jvm.timestamp
+          type: int
+          description: >
+            JVM timestamp.
+
+        - name: uptime_in_millis
+          path: cluster_node.jvm.uptime_in_millis
+          type: int
+          description: >
+            JVM uptime in millis.
+
+        - name: heap_used_in_bytes
+          path: cluster_node.jvm.mem.heap_used_in_bytes
+          type: int
+          description: >
+            JVM memory heap used in bytes.
+
+        - name: heap_used_percent
+          path: cluster_node.jvm.mem.heap_used_percent
+          type: int
+          description: >
+            JVM memory heap used percent.
+
+        - name: heap_committed_in_bytes
+          path: cluster_node.jvm.mem.heap_committed_in_bytes
+          type: int
+          description: >
+            JVM memory heap committed in bytes.
+
+        - name: heap_max_in_bytes
+          path: cluster_node.jvm.mem.heap_max_in_bytes
+          type: int
+          description: >
+            JVM memory heap max in bytes.
+
+        - name: non_heap_used_in_bytes
+          path: cluster_node.jvm.mem.non_heap_used_in_bytes
+          type: int
+          description: >
+            JVM memory non heap used in bytes.
+
+        - name: non_heap_committed_in_bytes
+          path: cluster_node.jvm.mem.non_heap_committed_in_bytes
+          type: int
+          description: >
+            JVM memory non heap committed in bytes.
+
+        - name: used_in_bytes
+          path: cluster_node.jvm.mem.pools.young.used_in_bytes
+          type: int
+          description: >
+            JVM memory pools young used in bytes.
+
+        - name: max_in_bytes
+          path: cluster_node.jvm.mem.pools.young.max_in_bytes
+          type: int
+          description: >
+            JVM memory pools young max in bytes.
+
+        - name: peak_used_in_bytes
+          path: cluster_node.jvm.mem.pools.young.peak_used_in_bytes
+          type: int
+          description: >
+            JVM memory pools young peak used in bytes.
+
+        - name: peak_max_in_bytes
+          path: cluster_node.jvm.mem.pools.young.peak_max_in_bytes
+          type: int
+          description: >
+            JVM memory pools young peak max in bytes.
+
+        - name: used_in_bytes
+          path: cluster_node.jvm.mem.pools.survivor.used_in_bytes
+          type: int
+          description: >
+            JVM memory pools survivor used in bytes.
+
+        - name: max_in_bytes
+          path: cluster_node.jvm.mem.pools.survivor.max_in_bytes
+          type: int
+          description: >
+            JVM memory pools survivor max in bytes.
+
+        - name: peak_used_in_bytes
+          path: cluster_node.jvm.mem.pools.survivor.peak_used_in_bytes
+          type: int
+          description: >
+            JVM memory pools survivor peak used in bytes.
+
+        - name: peak_max_in_bytes
+          path: cluster_node.jvm.mem.pools.survivor.peak_max_in_bytes
+          type: int
+          description: >
+            JVM memory pools survivor peak max in bytes.
+
+        - name: used_in_bytes
+          path: cluster_node.jvm.mem.pools.old.used_in_bytes
+          type: int
+          description: >
+            JVM memory pools old used in bytes.
+
+        - name: max_in_bytes
+          path: cluster_node.jvm.mem.pools.old.max_in_bytes
+          type: int
+          description: >
+            JVM memory pools old max in bytes.
+
+        - name: peak_used_in_bytes
+          path: cluster_node.jvm.mem.pools.old.peak_used_in_bytes
+          type: int
+          description: >
+            JVM memory pools old peak used in bytes.
+
+        - name: peak_max_in_bytes
+          path: cluster_node.jvm.mem.pools.old.peak_max_in_bytes
+          type: int
+          description: >
+            JVM memory pools old peak max in bytes.
+
+        - name: count
+          path: cluster_node.jvm.threads.count
+          type: int
+          description: >
+            JVM threads count.
+
+        - name: peak_count
+          path: cluster_node.jvm.threads.peak_count
+          type: int
+          description: >
+            JVM threads peak count.
+
+        - name: collection_count
+          path: cluster_node.jvm.gc.collectors.young.collection_count
+          type: int
+          description: >
+            JVM gc collectors young collection count.
+
+        - name: collection_time_in_millis
+          path: cluster_node.jvm.gc.collectors.young.collection_time_in_millis
+          type: int
+          description: >
+            JVM gc collectors young collection time in millis.
+
+        - name: collection_count
+          path: cluster_node.jvm.gc.collectors.old.collection_count
+          type: int
+          description: >
+            JVM gc collectors old collection count.
+
+        - name: collection_time_in_millis
+          path: cluster_node.jvm.gc.collectors.old.collection_time_in_millis
+          type: int
+          description: >
+            JVM gc collectors old collection time in millis.
+
+        - name: count
+          path: cluster_node.jvm.buffer_pools.direct.count
+          type: int
+          description: >
+            JVM buffer pools direct count.
+
+        - name: used_in_bytes
+          path: cluster_node.jvm.buffer_pools.direct.used_in_bytes
+          type: int
+          description: >
+            JVM buffer pools direct used in bytes.
+
+        - name: total_capacity_in_bytes
+          path: cluster_node.jvm.buffer_pools.direct.total_capacity_in_bytes
+          type: int
+          description: >
+            JVM buffer pools direct total capacity in bytes.
+
+        - name: count
+          path: cluster_node.jvm.buffer_pools.mapped.count
+          type: int
+          description: >
+            JVM buffer pools mapped count.
+
+        - name: used_in_bytes
+          path: cluster_node.jvm.buffer_pools.mapped.used_in_bytes
+          type: int
+          description: >
+            JVM buffer pools mapped used in bytes.
+
+        - name: total_capacity_in_bytes
+          path: cluster_node.jvm.buffer_pools.mapped.total_capacity_in_bytes
+          type: int
+          description: >
+            JVM buffer pools mapped total capacity in bytes.
+
+        - name: threads
+          path: cluster_node.thread_pool.bulk.threads
+          type: int
+          description: >
+            Thread pool bulk threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.bulk.queue
+          type: int
+          description: >
+            Thread pool bulk queue.
+
+        - name: active
+          path: cluster_node.thread_pool.bulk.active
+          type: int
+          description: >
+            Thread pool bulk active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.bulk.rejected
+          type: int
+          description: >
+            Thread pool bulk rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.bulk.largest
+          type: int
+          description: >
+            Thread pool bulk largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.bulk.completed
+          type: int
+          description: >
+            Thread pool bulk completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.fetch_shard_started.threads
+          type: int
+          description: >
+            Thread pool fetch shard started threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.fetch_shard_started.queue
+          type: int
+          description: >
+            Thread pool fetch shard started queue.
+
+        - name: active
+          path: cluster_node.thread_pool.fetch_shard_started.active
+          type: int
+          description: >
+            Thread pool fetch shard started active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.fetch_shard_started.rejected
+          type: int
+          description: >
+            Thread pool fetch shard started rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.fetch_shard_started.largest
+          type: int
+          description: >
+            Thread pool fetch shard started largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.fetch_shard_started.completed
+          type: int
+          description: >
+            Thread pool fetch shard started completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.fetch_shard_store.threads
+          type: int
+          description: >
+            Thread pool fetch shard store threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.fetch_shard_store.queue
+          type: int
+          description: >
+            Thread pool fetch shard store queue.
+
+        - name: active
+          path: cluster_node.thread_pool.fetch_shard_store.active
+          type: int
+          description: >
+            Thread pool fetch shard store active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.fetch_shard_store.rejected
+          type: int
+          description: >
+            Thread pool fetch shard store rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.fetch_shard_store.largest
+          type: int
+          description: >
+            Thread pool fetch shard store largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.fetch_shard_store.completed
+          type: int
+          description: >
+            Thread pool fetch shard store completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.flush.threads
+          type: int
+          description: >
+            Thread pool flush threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.flush.queue
+          type: int
+          description: >
+            Thread pool flush queue.
+
+        - name: active
+          path: cluster_node.thread_pool.flush.active
+          type: int
+          description: >
+            Thread pool flush active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.flush.rejected
+          type: int
+          description: >
+            Thread pool flush rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.flush.largest
+          type: int
+          description: >
+            Thread pool flush largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.flush.completed
+          type: int
+          description: >
+            Thread pool flush completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.force_merge.threads
+          type: int
+          description: >
+            Thread pool force merge threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.force_merge.queue
+          type: int
+          description: >
+            Thread pool force merge queue.
+
+        - name: active
+          path: cluster_node.thread_pool.force_merge.active
+          type: int
+          description: >
+            Thread pool force merge active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.force_merge.rejected
+          type: int
+          description: >
+            Thread pool force merge rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.force_merge.largest
+          type: int
+          description: >
+            Thread pool force merge largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.force_merge.completed
+          type: int
+          description: >
+            Thread pool force merge completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.generic.threads
+          type: int
+          description: >
+            Thread pool generic threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.generic.queue
+          type: int
+          description: >
+            Thread pool generic queue.
+
+        - name: active
+          path: cluster_node.thread_pool.generic.active
+          type: int
+          description: >
+            Thread pool generic active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.generic.rejected
+          type: int
+          description: >
+            Thread pool generic rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.generic.largest
+          type: int
+          description: >
+            Thread pool generic largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.generic.completed
+          type: int
+          description: >
+            Thread pool generic completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.get.threads
+          type: int
+          description: >
+            Thread pool get threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.get.queue
+          type: int
+          description: >
+            Thread pool get queue.
+
+        - name: active
+          path: cluster_node.thread_pool.get.active
+          type: int
+          description: >
+            Thread pool get active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.get.rejected
+          type: int
+          description: >
+            Thread pool get rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.get.largest
+          type: int
+          description: >
+            Thread pool get largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.get.completed
+          type: int
+          description: >
+            Thread pool get completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.index.threads
+          type: int
+          description: >
+            Thread pool index threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.index.queue
+          type: int
+          description: >
+            Thread pool index queue.
+
+        - name: active
+          path: cluster_node.thread_pool.index.active
+          type: int
+          description: >
+            Thread pool index active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.index.rejected
+          type: int
+          description: >
+            Thread pool index rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.index.largest
+          type: int
+          description: >
+            Thread pool index largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.index.completed
+          type: int
+          description: >
+            Thread pool index completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.listener.threads
+          type: int
+          description: >
+            Thread pool listener threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.listener.queue
+          type: int
+          description: >
+            Thread pool listener queue.
+
+        - name: active
+          path: cluster_node.thread_pool.listener.active
+          type: int
+          description: >
+            Thread pool listener active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.listener.rejected
+          type: int
+          description: >
+            Thread pool listener rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.listener.largest
+          type: int
+          description: >
+            Thread pool listener largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.listener.completed
+          type: int
+          description: >
+            Thread pool listener completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.management.threads
+          type: int
+          description: >
+            Thread pool management threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.management.queue
+          type: int
+          description: >
+            Thread pool management queue.
+
+        - name: active
+          path: cluster_node.thread_pool.management.active
+          type: int
+          description: >
+            Thread pool management active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.management.rejected
+          type: int
+          description: >
+            Thread pool management rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.management.largest
+          type: int
+          description: >
+            Thread pool management largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.management.completed
+          type: int
+          description: >
+            Thread pool management completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.percolate.threads
+          type: int
+          description: >
+            Thread pool percolate threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.percolate.queue
+          type: int
+          description: >
+            Thread pool percolate queue.
+
+        - name: active
+          path: cluster_node.thread_pool.percolate.active
+          type: int
+          description: >
+            Thread pool percolate active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.percolate.rejected
+          type: int
+          description: >
+            Thread pool percolate rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.percolate.largest
+          type: int
+          description: >
+            Thread pool percolate largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.percolate.completed
+          type: int
+          description: >
+            Thread pool percolate completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.refresh.threads
+          type: int
+          description: >
+            Thread pool refresh threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.refresh.queue
+          type: int
+          description: >
+            Thread pool refresh queue.
+
+        - name: active
+          path: cluster_node.thread_pool.refresh.active
+          type: int
+          description: >
+            Thread pool refresh active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.refresh.rejected
+          type: int
+          description: >
+            Thread pool refresh rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.refresh.largest
+          type: int
+          description: >
+            Thread pool refresh largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.refresh.completed
+          type: int
+          description: >
+            Thread pool refresh completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.search.threads
+          type: int
+          description: >
+            Thread pool search threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.search.queue
+          type: int
+          description: >
+            Thread pool search queue.
+
+        - name: active
+          path: cluster_node.thread_pool.search.active
+          type: int
+          description: >
+            Thread pool search active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.search.rejected
+          type: int
+          description: >
+            Thread pool search rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.search.largest
+          type: int
+          description: >
+            Thread pool search largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.search.completed
+          type: int
+          description: >
+            Thread pool search completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.snapshot.threads
+          type: int
+          description: >
+            Thread pool snapshot threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.snapshot.queue
+          type: int
+          description: >
+            Thread pool snapshot queue.
+
+        - name: active
+          path: cluster_node.thread_pool.snapshot.active
+          type: int
+          description: >
+            Thread pool snapshot active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.snapshot.rejected
+          type: int
+          description: >
+            Thread pool snapshot rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.snapshot.largest
+          type: int
+          description: >
+            Thread pool snapshot largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.snapshot.completed
+          type: int
+          description: >
+            Thread pool snapshot completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.suggest.threads
+          type: int
+          description: >
+            Thread pool suggest threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.suggest.queue
+          type: int
+          description: >
+            Thread pool suggest queue.
+
+        - name: active
+          path: cluster_node.thread_pool.suggest.active
+          type: int
+          description: >
+            Thread pool suggest active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.suggest.rejected
+          type: int
+          description: >
+            Thread pool suggest rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.suggest.largest
+          type: int
+          description: >
+            Thread pool suggest largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.suggest.completed
+          type: int
+          description: >
+            Thread pool suggest completed.
+
+        - name: threads
+          path: cluster_node.thread_pool.warmer.threads
+          type: int
+          description: >
+            Thread pool warmer threads.
+
+        - name: queue
+          path: cluster_node.thread_pool.warmer.queue
+          type: int
+          description: >
+            Thread pool warmer queue.
+
+        - name: active
+          path: cluster_node.thread_pool.warmer.active
+          type: int
+          description: >
+            Thread pool warmer active.
+
+        - name: rejected
+          path: cluster_node.thread_pool.warmer.rejected
+          type: int
+          description: >
+            Thread pool warmer rejected.
+
+        - name: largest
+          path: cluster_node.thread_pool.warmer.largest
+          type: int
+          description: >
+            Thread pool warmer largest.
+
+        - name: completed
+          path: cluster_node.thread_pool.warmer.completed
+          type: int
+          description: >
+            Thread pool warmer completed.
+
+        - name: timestamp
+          path: cluster_node.fs.timestamp
+          type: int
+          description: >
+            Fs timestamp.
+
+        - name: total_in_bytes
+          path: cluster_node.fs.total.total_in_bytes
+          type: int
+          description: >
+            Fs total total in bytes.
+
+        - name: free_in_bytes
+          path: cluster_node.fs.total.free_in_bytes
+          type: int
+          description: >
+            Fs total free in bytes.
+
+        - name: available_in_bytes
+          path: cluster_node.fs.total.available_in_bytes
+          type: int
+          description: >
+            Fs total available in bytes.
+
+        - name: spins
+          path: cluster_node.fs.total.spins
+          type: string
+          description: >
+            Fs total spins.
+
+        - name: server_open
+          path: cluster_node.transport.server_open
+          type: int
+          description: >
+            Transport server open.
+
+        - name: rx_count
+          path: cluster_node.transport.rx_count
+          type: int
+          description: >
+            Transport rx count.
+
+        - name: rx_size_in_bytes
+          path: cluster_node.transport.rx_size_in_bytes
+          type: int
+          description: >
+            Transport rx size in bytes.
+
+        - name: tx_count
+          path: cluster_node.transport.tx_count
+          type: int
+          description: >
+            Transport tx count.
+
+        - name: tx_size_in_bytes
+          path: cluster_node.transport.tx_size_in_bytes
+          type: int
+          description: >
+            Transport tx size in bytes.
+
+        - name: current_open
+          path: cluster_node.http.current_open
+          type: int
+          description: >
+            Http current open.
+
+        - name: total_opened
+          path: cluster_node.http.total_opened
+          type: int
+          description: >
+            Http total opened.
+
+        - name: limit_size_in_bytes
+          path: cluster_node.breakers.request.limit_size_in_bytes
+          type: int
+          description: >
+            Breakers request limit size in bytes.
+
+        - name: limit_size
+          path: cluster_node.breakers.request.limit_size
+          type: string
+          description: >
+            Breakers request limit size.
+
+        - name: estimated_size_in_bytes
+          path: cluster_node.breakers.request.estimated_size_in_bytes
+          type: int
+          description: >
+            Breakers request estimated size in bytes.
+
+        - name: estimated_size
+          path: cluster_node.breakers.request.estimated_size
+          type: string
+          description: >
+            Breakers request estimated size.
+
+        - name: overhead
+          path: cluster_node.breakers.request.overhead
+          type: float
+          description: >
+            Breakers request overhead.
+
+        - name: tripped
+          path: cluster_node.breakers.request.tripped
+          type: int
+          description: >
+            Breakers request tripped.
+
+        - name: limit_size_in_bytes
+          path: cluster_node.breakers.fielddata.limit_size_in_bytes
+          type: int
+          description: >
+            Breakers fielddata limit size in bytes.
+
+        - name: limit_size
+          path: cluster_node.breakers.fielddata.limit_size
+          type: string
+          description: >
+            Breakers fielddata limit size.
+
+        - name: estimated_size_in_bytes
+          path: cluster_node.breakers.fielddata.estimated_size_in_bytes
+          type: int
+          description: >
+            Breakers fielddata estimated size in bytes.
+
+        - name: estimated_size
+          path: cluster_node.breakers.fielddata.estimated_size
+          type: string
+          description: >
+            Breakers fielddata estimated size.
+
+        - name: overhead
+          path: cluster_node.breakers.fielddata.overhead
+          type: float
+          description: >
+            Breakers fielddata overhead.
+
+        - name: tripped
+          path: cluster_node.breakers.fielddata.tripped
+          type: int
+          description: >
+            Breakers fielddata tripped.
+
+        - name: limit_size_in_bytes
+          path: cluster_node.breakers.parent.limit_size_in_bytes
+          type: int
+          description: >
+            Breakers parent limit size in bytes.
+
+        - name: limit_size
+          path: cluster_node.breakers.parent.limit_size
+          type: string
+          description: >
+            Breakers parent limit size.
+
+        - name: estimated_size_in_bytes
+          path: cluster_node.breakers.parent.estimated_size_in_bytes
+          type: int
+          description: >
+            Breakers parent estimated size in bytes.
+
+        - name: estimated_size
+          path: cluster_node.breakers.parent.estimated_size
+          type: string
+          description: >
+            Breakers parent estimated size.
+
+        - name: overhead
+          path: cluster_node.breakers.parent.overhead
+          type: float
+          description: >
+            Breakers parent overhead.
+
+        - name: tripped
+          path: cluster_node.breakers.parent.tripped
+          type: int
+          description: >
+            Breakers parent tripped.
+
+        - name: compilations
+          path: cluster_node.script.compilations
+          type: int
+          description: >
+            Script compilations.
+
+        - name: cache_evictions
+          path: cluster_node.script.cache_evictions
+          type: int
+          description: >
+            Script cache_evictions.

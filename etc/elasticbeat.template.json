@@ -32,6 +32,18 @@
             }
           }
         },
+        "cluster_node": {
+          "properties": {
+            "load_average": {
+              "doc_values": "true",
+              "type": "float"
+            },
+            "overhead": {
+              "doc_values": "true",
+              "type": "float"
+            }
+          }
+        },
         "cluster_stats": {
           "properties": {
             "avg": {
