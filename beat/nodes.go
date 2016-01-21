@@ -263,7 +263,7 @@ type NodeStats struct {
 		Request struct {
 			Limit_size_in_bytes     uint64  `json:"limit_size_in_bytes"`
 			Limit_size              string  `json:"limit_size"`
-			Estimated_size_in_bytes uint64  `json:"estimated_size_in_bytes	"`
+			Estimated_size_in_bytes uint64  `json:"estimated_size_in_bytes"`
 			Estimated_size          string  `json:"estimated_size"`
 			Overhead                float64 `json:"overhead"`
 			Tripped                 uint64  `json:"tripped"`
@@ -271,7 +271,7 @@ type NodeStats struct {
 		Fielddata struct {
 			Limit_size_in_bytes     uint64  `json:"limit_size_in_bytes"`
 			Limit_size              string  `json:"limit_size"`
-			Estimated_size_in_bytes uint64  `json:"estimated_size_in_bytes	"`
+			Estimated_size_in_bytes uint64  `json:"estimated_size_in_bytes"`
 			Estimated_size          string  `json:"estimated_size"`
 			Overhead                float64 `json:"overhead"`
 			Tripped                 uint64  `json:"tripped"`
@@ -279,7 +279,7 @@ type NodeStats struct {
 		Parent struct {
 			Limit_size_in_bytes     uint64  `json:"limit_size_in_bytes"`
 			Limit_size              string  `json:"limit_size"`
-			Estimated_size_in_bytes uint64  `json:"estimated_size_in_bytes	"`
+			Estimated_size_in_bytes uint64  `json:"estimated_size_in_bytes"`
 			Estimated_size          string  `json:"estimated_size"`
 			Overhead                float64 `json:"overhead"`
 			Tripped                 uint64  `json:"tripped"`
