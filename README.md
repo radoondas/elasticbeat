@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/radoondas/elasticbeat.svg?branch=master)](https://travis-ci.org/radoondas/elasticbeat)
+
 # ElasticBeat
 Use your elasticsearch to store your cluster's statistics easy with only elastic components!! :)
 
