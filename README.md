@@ -3,7 +3,7 @@ Use your elasticsearch to store your cluster's statistics easy with only elastic
 
 Current status: **development release**. Further development and fine-tuning is in progress.
 
-**If you have any ideas or issues, please contribute.**
+**If you have any ideas or issues, please contribute. I expect that fields and statistics will settle down over time to reflect user's needs**
 
 ## Description
 Simple [beat](https://github.com/elastic/beats) for ElasticSearch cluster (and/or nodes) statistics. This beat requests statistics from your elastisearch cluster via available API.
