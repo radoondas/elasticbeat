@@ -77,7 +77,7 @@ cluster_health:
 
         - name: timed_out
           path: timed_out
-          type: bool
+          type: boolean
           description: >
             Timed out.
 
