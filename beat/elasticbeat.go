@@ -199,5 +199,6 @@ func (eb *Elasticbeat) Cleanup(b *beat.Beat) error {
 }
 
 func (eb *Elasticbeat) Stop() {
+	logp.Debug(selector, "Stop elasticbeat")
 	close(eb.done)
 }
