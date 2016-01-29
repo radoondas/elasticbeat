@@ -44,11 +44,11 @@ curl -XPUT 'http://localhost:9200/_template/elasticbeat' -d@elasticbeat.template
 Following command will execute ElasticBeat with debug option and will not index results in to ES. Instead, you will see output on the screen.
 ```bash
 cd ~/workspace/go/bin
-./elasticbeat  -e -v -d elasticbeat -c ~/workspace/go/src/github.com/radoondas/elasticbeat/etc/elasticbeat.yml
+./elasticbeat  -e -v -d elasticbeat -c ~/workspace/go/src/github.com/radoondas/elasticbeat/elasticbeat.yml
 ```
 
 With no debug options - just do straight indexing to your ES installation
 
 ```bash
-./elasticbeat  -e -c ~/workspace/go/src/github.com/radoondas/elasticbeat/etc/elasticbeat.yml
+./elasticbeat  -e -c ~/workspace/go/src/github.com/radoondas/elasticbeat/elasticbeat.yml
 ```
