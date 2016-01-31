@@ -1,4 +1,4 @@
-package beat
+package beater
 
 import (
 	"errors"
@@ -30,7 +30,9 @@ type Elasticbeat struct {
 }
 
 func New() *Elasticbeat {
-	return &Elasticbeat{}
+	return &Elasticbeat{
+		done: make(chan struct{}),
+	}
 }
 
 func (eb *Elasticbeat) Config(b *beat.Beat) error {
