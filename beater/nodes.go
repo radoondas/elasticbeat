@@ -13,6 +13,9 @@ import (
 	"strings"
 )
 
+const NODE_STATS  = "/_nodes/stats/process,jvm,os,fs,thread_pool,transport,http,breaker,script"
+const NODE_IDS = "/_cat/nodes?full_id=true&h=id"
+
 type NodeStats struct {
 	Timestamp uint64 `json:"timestamp"`
 	Name      string `json:"name"`
@@ -307,7 +310,7 @@ func (eb *Elasticbeat) GetNodesStats(u url.URL) ([]NodeStats, error) {
 
 	if len(ids) > 0 {
 
-		res, err := http.Get(TrimSuffix(u.String(), "/") + "/_nodes/stats/process,jvm,os,fs,thread_pool,transport,http,breaker,script")
+		res, err := http.Get(TrimSuffix(u.String(), "/") + NODE_STATS)
 		if err != nil {
 			return nil, err
 		}
@@ -348,7 +351,7 @@ func (eb *Elasticbeat) GetNodesStats(u url.URL) ([]NodeStats, error) {
 }
 
 func (eb *Elasticbeat) GetNodeIDs(u url.URL) ([]string, error) {
-	res, err := http.Get(u.String() + "/_cat/nodes?full_id=true&h=id")
+	res, err := http.Get(u.String() + NODE_IDS)
 	if err != nil {
 		return nil, err
 	}

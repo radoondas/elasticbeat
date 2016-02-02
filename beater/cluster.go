@@ -8,6 +8,9 @@ import (
 	"net/url"
 )
 
+const CLUSTER_HEALTH = "/_cluster/health"
+const CLUSTER_STATS = "/_cluster/stats"
+
 type ClusterHealth struct {
 	Cluster_name                     string  `json:"cluster_name"`
 	Status                           string  `json:"status"`
@@ -151,7 +154,7 @@ type ClusterStats struct {
 func (eb *Elasticbeat) GetCLusterHealth(u url.URL) (ClusterHealth, error) {
 	health := ClusterHealth{}
 
-	res, err := http.Get(TrimSuffix(u.String(), "/") + "/_cluster/health?pretty")
+	res, err := http.Get(TrimSuffix(u.String(), "/") + CLUSTER_HEALTH)
 	if err != nil {
 		return health, err
 	}
@@ -178,7 +181,7 @@ func (eb *Elasticbeat) GetCLusterHealth(u url.URL) (ClusterHealth, error) {
 func (eb *Elasticbeat) GetCLusterStats(u url.URL) (ClusterStats, error) {
 	stats := ClusterStats{}
 
-	res, err := http.Get(TrimSuffix(u.String(), "/") + "/_cluster/stats?pretty")
+	res, err := http.Get(TrimSuffix(u.String(), "/") + CLUSTER_STATS)
 	if err != nil {
 		return stats, err
 	}
