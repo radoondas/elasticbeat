@@ -37,6 +37,9 @@ In configuration file elasticsearch.yml:
 node.name: testnode1
 ```
 
+## How to run it
+This is [simple run guide](/RUN.md).
+
 ## Examples
 
 ![ElasticBeat example 1](doc/images/elasticbeat_1.png)
