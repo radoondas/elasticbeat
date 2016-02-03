@@ -6,7 +6,7 @@ Add to your .bashrc important variables
 ```bash
 export GOROOT="$HOME/opt/go"
 export GOPATH="$HOME/workspace/go"
-export PATH="$HOME/opt/go/bin:$PATH"
+export PATH="$GOROOT/bin:$PATH"
 ```
 
 ## Install ElasticBeat and dependencies
