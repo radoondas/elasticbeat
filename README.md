@@ -40,6 +40,17 @@ node.name: testnode1
 ## How to run it
 This is [simple run guide](/RUN.md).
 
+## Kibana guide
+This is [simple KIBANA guide](/KIBANA.md).
+
+## Compatibility matrix
+Current **development** version of Elasticbeat was tested against elasticsearch in table.
+
+Elasticsearch | Elasticbeat
+------------ | -------------
+2.1 | DEV version
+2.2 | DEV version
+
 ## Examples
 
 ![ElasticBeat example 1](doc/images/elasticbeat_1.png)
