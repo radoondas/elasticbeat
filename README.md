@@ -48,6 +48,7 @@ Current **development** version of Elasticbeat was tested against elasticsearch 
 
 Elasticsearch | Elasticbeat
 ------------ | -------------
+2.0 | DEV version
 2.1 | DEV version
 2.2 | DEV version
 
