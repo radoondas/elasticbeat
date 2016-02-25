@@ -1,5 +1,27 @@
-/elasticbeat.iml
-/.project
-/.idea
-/Gemfile.lock
-/Gemfile
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_obj
+_test
+
+*.exe
+*.test
+*.prof
+
+# Golang 1.5+ vendor folder
+#vendor/
+
+# build
+elasticbeat
+
+# IntelliJ IDEA
+.idea/
+.project
+elasticbeat.iml
+
+# Gemfiles
+Gemfile.lock
+Gemfile
