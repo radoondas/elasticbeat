@@ -11,8 +11,6 @@ before_install:
   - rsync -az ${TRAVIS_BUILD_DIR}/ $HOME/gopath/src/github.com/radoondas/elasticbeat/
   - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/radoondas/elasticbeat
   - cd $HOME/gopath/src/github.com/radoondas/elasticbeat
-  - go get github.com/elastic/beats/libbeat
-  - go get github.com/stretchr/testify/assert
 
 install:
   - make
