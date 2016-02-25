@@ -40,12 +40,31 @@ output:
     #username: "admin"
     #password: "s3cr3t"
 
+    # Dictionary of HTTP parameters to pass within the url with index operations.
+    #parameters:
+      #param1: value1
+      #param2: value2
+
     # Number of workers per Elasticsearch host.
     #worker: 1
 
     # Optional index name. The default is "elasticbeat" and generates
     # [elasticbeat-]YYYY.MM.DD keys.
     #index: "elasticbeat"
+
+    # A template is used to set the mapping in Elasticsearch
+    # By default template loading is disabled and no template is loaded.
+    # These settings can be adjusted to load your own template or overwrite existing ones
+    #template:
+
+      # Template name. By default the template name is beatname.
+      #name: "beatname"
+
+      # Path to template file
+      #path: "beatname.template.json"
+
+      # Overwrite existing template
+      #overwrite: false
 
     # Optional HTTP Path
     #path: "/elasticsearch"
@@ -204,6 +223,10 @@ shipper:
 
   # Internal queue size for single events in processing pipeline
   #queue_size: 1000
+
+  # Sets the maximum number of CPUs that can be executing simultaneously. The
+  # default is the number of logical CPUs available in the system.
+  #max_procs:
 
   # Configure local GeoIP database support.
   # If no paths are not configured geoip is disabled.
