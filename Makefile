@@ -1,13 +1,11 @@
-PREFIX?=/build
+BEATNAME=elasticbeat
+BEAT_DIR=github.com/radoondas/elasticbeat
+ES_BEATS=./vendor/github.com/elastic/beats
+GOPACKAGES=$(shell glide novendor)
+SYSTEM_TESTS=false
 
-GOFILES = $(shell find . -type f -name '*.go')
-apachebeat: $(GOFILES)
-	go build
+# Only crosscompile for linux because other OS'es use cgo.
+#GOX_OS=linux darwin windows solaris freebsd netbsd openbsd
+GOX_OS=linux
 
-.PHONY: test
-test:
-	go test ./...
-
-.PHONY: clean
-clean:
-	rm elasticbeat || true
+include $(ES_BEATS)/libbeat/scripts/Makefile

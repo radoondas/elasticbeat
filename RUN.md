@@ -1,19 +1,23 @@
 # Short RUN guide
 
-First, setup Go lang environment (https://golang.org/doc/install)
+First, setup [Go lang environment](https://golang.org/doc/install) (if you don't have it already)
 Add to your .bashrc important variables
 
 ```bash
 export GOROOT="$HOME/opt/go"
 export GOPATH="$HOME/workspace/go"
 export PATH="$GOROOT/bin:$PATH"
+# to enable vendor experiment in GO 1.5
+export GO15VENDOREXPERIMENT=1
 ```
 
-## Install ElasticBeat and dependencies
+## Build ElasticBeat
 
 ```bash
-go get -insecure gopkg.in/yaml.v2
-go get github.com/radoondas/elasticbeat
+cd $GOPATH
+mkdir -p src/github.com/radoondas
+cd src/github.com/radoondas
+git clone https://github.com/radoondas/elasticbeat.git
 ```
 
 ## Elastic and Kibana
@@ -22,8 +26,8 @@ Meanwhile setup your ElasticSearch and Kibana (example [dashbords](https://githu
 ## Build ElasticBeat
 
 ```bash
-cd ~/workspace/go/src/github.com/radoondas/elasticbeat
-go install
+cd $GOPATH/src/github.com/radoondas/elasticbeat
+make
 ```
 
 ## Delete template (Optional)
@@ -43,12 +47,12 @@ curl -XPUT 'http://localhost:9200/_template/elasticbeat' -d@elasticbeat.template
 
 Following command will execute ElasticBeat with debug option and will not index results in to ES. Instead, you will see output on the screen.
 ```bash
-cd ~/workspace/go/bin
-./elasticbeat  -e -v -d elasticbeat -c ~/workspace/go/src/github.com/radoondas/elasticbeat/elasticbeat.yml
+cd $GOPATH/src/github.com/radoondas/elasticbeat
+./elasticbeat  -e -v -d elasticbeat -c elasticbeat.yml
 ```
 
 With no debug options - just do straight indexing to your ES installation
 
 ```bash
-./elasticbeat  -e -c ~/workspace/go/src/github.com/radoondas/elasticbeat/elasticbeat.yml
+./elasticbeat -c elasticbeat.yml
 ```
