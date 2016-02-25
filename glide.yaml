@@ -1,0 +1,14 @@
+package: github.com/radoondas/elasticbeat
+import:
+- package: github.com/elastic/beats
+  subpackages:
+  - libbeat/beat
+  - libbeat/cfgfile
+  - libbeat/common
+  - libbeat/logp
+  - libbeat/publisher
+- package: gopkg.in/yaml.v2
+  vcs: git
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
