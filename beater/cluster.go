@@ -43,17 +43,17 @@ type ClusterStats struct {
 			Replication float64 `json:"replication"`
 			Index       struct {
 				Shards struct {
-					Min float64 `json:"nin"`
+					Min float64 `json:"min"`
 					Max float64 `json:"max"`
 					Avg float64 `json:"avg"`
 				}
 				Primaries struct {
-					Min float64 `json:"nin"`
+					Min float64 `json:"min"`
 					Max float64 `json:"max"`
 					Avg float64 `json:"avg"`
 				}
 				Replication struct {
-					Min float64 `json:"nin"`
+					Min float64 `json:"min"`
 					Max float64 `json:"max"`
 					Avg float64 `json:"avg"`
 				}
