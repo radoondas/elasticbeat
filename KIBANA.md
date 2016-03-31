@@ -27,5 +27,5 @@ For more options:
 
 ## Examples
 
-![ElasticBeat example 1](doc/images/elasticbeat_1.png)
-![ElasticBeat example 2](doc/images/elasticbeat_2.png)
+![ElasticBeat example 1](docs/images/elasticbeat_1.png)
+![ElasticBeat example 2](docs/images/elasticbeat_2.png)
