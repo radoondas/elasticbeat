@@ -9,14 +9,13 @@ input:
   # Defaults to ["http://127.0.0.1:9200"].
   # Note: Do not use trailing slash
   urls:
-    - http://127.0.0.1:9200
+    - http://127.0.0.1:9200/
 
   # Statistics to collect
   stats:
     cluster: true
     nodes: true
     health: true
-
 ###############################################################################
 ############################# Libbeat Config ##################################
 # Base config file used by all other beats for using libbeat features
@@ -57,11 +56,11 @@ output:
     # These settings can be adjusted to load your own template or overwrite existing ones
     #template:
 
-      # Template name. By default the template name is beatname.
-      #name: "beatname"
+      # Template name. By default the template name is elasticbeat.
+      #name: "elasticbeat"
 
       # Path to template file
-      #path: "beatname.template.json"
+      #path: "elasticbeat.template.json"
 
       # Overwrite existing template
       #overwrite: false
@@ -141,10 +140,15 @@ output:
     # Optional load balance the events between the Logstash hosts
     #loadbalance: true
 
-    # Optional index name. The default index name depends on the each beat.
-    # For Packetbeat, the default is set to packetbeat, for Topbeat
-    # top topbeat and for Filebeat to filebeat.
+    # Optional index name. The default index name is set to name of the beat
+    # in all lowercase.
     #index: elasticbeat
+
+    # SOCKS5 proxy server URL
+    #proxy_url: socks5://user:password@socks5-server:2233
+
+    # Resolve names locally when using a proxy server. Defaults to false.
+    #proxy_use_local_resolver: false
 
     # Optional TLS. By default is off.
     #tls:
@@ -179,7 +183,7 @@ output:
     #filename: elasticbeat
 
     # Maximum size in kilobytes of each file. When this size is reached, the files are
-    # rotated. The default value is 10 MB.
+    # rotated. The default value is 10240 kB.
     #rotate_every_kb: 10000
 
     # Maximum number of files under path. When this number of files is reached, the
@@ -206,6 +210,17 @@ shipper:
   # transaction published. Tags make it easy to group servers by different
   # logical properties.
   #tags: ["service-X", "web-tier"]
+
+  # Optional fields that you can specify to add additional information to the
+  # output. Fields can be scalar values, arrays, dictionaries, or any nested
+  # combination of these.
+  #fields:
+  #  env: staging
+
+  # If this option is set to true, the custom fields are stored as top-level
+  # fields in the output document instead of being grouped under a fields
+  # sub-dictionary. Default is false.
+  #fields_under_root: false
 
   # Uncomment the following if you want to ignore transactions created
   # by the server on which the shipper is installed. This option is useful
@@ -238,7 +253,7 @@ shipper:
 
 ############################# Logging #########################################
 
-# There are three options for the log ouput: syslog, file, stderr.
+# There are three options for the log output: syslog, file, stderr.
 # Under Windows systems, the log files are per default sent to the file output,
 # under all other system per default to syslog.
 logging:
@@ -274,3 +289,5 @@ logging:
   # Sets log level. The default log level is error.
   # Available log levels are: critical, error, warning, info, debug
   #level: error
+
+

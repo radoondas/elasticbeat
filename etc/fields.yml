@@ -1655,3 +1655,9 @@ cluster_node:
           type: int
           description: >
             Script cache_evictions.
+
+sections:
+  - ["env", "Common"]
+  - ["cluster_health", "Elasticsearch cluster health"]
+  - ["cluster_stats", "Elasticsearch cluster stats"]
+  - ["cluster_node", "Elasticsearch node stats"]

@@ -6,9 +6,8 @@ This file is generated! See etc/fields.yml and scripts/generate_field_docs.py
 [[exported-fields]]
 == Exported Fields
 
-This document describes the fields that are exported by
-ApacheBeat. They are grouped in the
-following categories:
+This document describes the fields that are exported by Elasticbeat. They are
+grouped in the following categories:
 
 * <<exported-fields-env>>
 * <<exported-fields-cluster_health>>
@@ -62,14 +61,14 @@ The hostname as returned by the operating system on which the Beat is running.
 
 
 [[exported-fields-cluster_health]]
-=== Contains elasticsearch cluster health statistics Fields
+=== Elasticsearch cluster health Fields
 
 Contains elasticsearch cluster health statistics.
 
 
 
 [[exported-fields-cluster_health]]
-=== Contains elasticsearch cluster health statistics Fields
+=== Elasticsearch cluster health Fields
 
 Contains elasticsearch cluster health statistics.
 
@@ -98,7 +97,7 @@ Cluster status - numerical.
 
 ==== timed_out
 
-type: bool
+type: boolean
 
 Timed out.
 
@@ -188,14 +187,14 @@ Active shards percent as number.
 
 
 [[exported-fields-cluster_stats]]
-=== Contains elasticsearch cluster stats statistics Fields
+=== Elasticsearch cluster stats Fields
 
 Contains elasticsearch cluster stats statistics.
 
 
 
 [[exported-fields-cluster_stats]]
-=== Contains elasticsearch cluster stats statistics Fields
+=== Elasticsearch cluster stats Fields
 
 Contains elasticsearch cluster stats statistics.
 
@@ -671,14 +670,14 @@ Nodes fs spins.
 
 
 [[exported-fields-cluster_node]]
-=== Contains elasticsearch node stats statistics Fields
+=== Elasticsearch node stats Fields
 
 Contains elasticsearch node stats statistics.
 
 
 
 [[exported-fields-cluster_node]]
-=== Contains elasticsearch node stats statistics Fields
+=== Elasticsearch node stats Fields
 
 Contains elasticsearch node stats statistics.
 
