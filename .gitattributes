@@ -1,0 +1,3 @@
+# Keep these file types as CRLF (Windows).
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
