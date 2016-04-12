@@ -51,6 +51,8 @@ Elasticsearch | Elasticbeat
 2.0 | DEV version
 2.1 | DEV version
 2.2 | DEV version
+2.3 | DEV version
+5.0 alpha | DEV version
 
 ## Examples
 
