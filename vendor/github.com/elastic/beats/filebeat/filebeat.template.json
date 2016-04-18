@@ -1,0 +1,38 @@
+{
+  "mappings": {
+    "_default_": {
+      "_all": {
+        "norms": false
+      },
+      "dynamic_templates": [
+        {
+          "template1": {
+            "mapping": {
+              "doc_values": true,
+              "ignore_above": 1024,
+              "index": true,
+              "type": "keyword"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "message": {
+          "norms": false,
+          "type": "text"
+        },
+        "offset": {
+          "type": "long"
+        }
+      }
+    }
+  },
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "template": "filebeat-*"
+}

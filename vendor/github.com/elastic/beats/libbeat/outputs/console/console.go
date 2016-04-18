@@ -10,25 +10,24 @@ import (
 )
 
 func init() {
-	outputs.RegisterOutputPlugin("console", plugin{})
-}
-
-type plugin struct{}
-
-func (p plugin) NewOutput(
-	config *outputs.MothershipConfig,
-	topologyExpire int,
-) (outputs.Outputer, error) {
-	pretty := config.Pretty != nil && *config.Pretty
-	return newConsole(pretty), nil
+	outputs.RegisterOutputPlugin("console", New)
 }
 
 type console struct {
-	pretty bool
+	config config
+}
+
+func New(config *common.Config, _ int) (outputs.Outputer, error) {
+	c := &console{config: defaultConfig}
+	err := config.Unpack(&c.config)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 func newConsole(pretty bool) *console {
-	return &console{pretty}
+	return &console{config{pretty}}
 }
 
 func writeBuffer(buf []byte) error {
@@ -44,6 +43,11 @@ func writeBuffer(buf []byte) error {
 	return nil
 }
 
+// Implement Outputer
+func (c *console) Close() error {
+	return nil
+}
+
 func (c *console) PublishEvent(
 	s outputs.Signaler,
 	opts outputs.Options,
@@ -52,13 +56,13 @@ func (c *console) PublishEvent(
 	var jsonEvent []byte
 	var err error
 
-	if c.pretty {
+	if c.config.Pretty {
 		jsonEvent, err = json.MarshalIndent(event, "", "  ")
 	} else {
 		jsonEvent, err = json.Marshal(event)
 	}
 	if err != nil {
-		logp.Err("Fail to convert the event to JSON: %s", err)
+		logp.Err("Fail to convert the event to JSON (%v): %#v", err, event)
 		outputs.SignalCompleted(s)
 		return err
 	}

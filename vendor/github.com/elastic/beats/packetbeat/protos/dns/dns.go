@@ -17,11 +17,11 @@ import (
 	"github.com/elastic/beats/libbeat/common"
 	"github.com/elastic/beats/libbeat/logp"
 
-	"github.com/elastic/beats/packetbeat/config"
 	"github.com/elastic/beats/packetbeat/protos"
 	"github.com/elastic/beats/packetbeat/publish"
 
 	mkdns "github.com/miekg/dns"
+	"golang.org/x/net/publicsuffix"
 )
 
 const MaxDnsTupleRawSize = 16 + 16 + 2 + 2 + 4 + 1
@@ -184,6 +184,59 @@ type DnsTransaction struct {
 	Response *DnsMessage
 }
 
+func init() {
+	protos.Register("dns", New)
+}
+
+func New(
+	testMode bool,
+	results publish.Transactions,
+	cfg *common.Config,
+) (protos.Plugin, error) {
+	p := &Dns{}
+	config := defaultConfig
+	if !testMode {
+		if err := cfg.Unpack(&config); err != nil {
+			return nil, err
+		}
+	}
+
+	if err := p.init(results, &config); err != nil {
+		return nil, err
+	}
+	return p, nil
+}
+
+func (dns *Dns) init(results publish.Transactions, config *dnsConfig) error {
+	dns.setFromConfig(config)
+	dns.transactions = common.NewCacheWithRemovalListener(
+		dns.transactionTimeout,
+		protos.DefaultTransactionHashSize,
+		func(k common.Key, v common.Value) {
+			trans, ok := v.(*DnsTransaction)
+			if !ok {
+				logp.Err("Expired value is not a *DnsTransaction.")
+				return
+			}
+			dns.expireTransaction(trans)
+		})
+	dns.transactions.StartJanitor(dns.transactionTimeout)
+
+	dns.results = results
+
+	return nil
+}
+
+func (dns *Dns) setFromConfig(config *dnsConfig) error {
+	dns.Ports = config.Ports
+	dns.Send_request = config.SendRequest
+	dns.Send_response = config.SendResponse
+	dns.Include_authorities = config.Include_authorities
+	dns.Include_additionals = config.Include_additionals
+	dns.transactionTimeout = config.TransactionTimeout
+	return nil
+}
+
 func newTransaction(ts time.Time, tuple DnsTuple, cmd common.CmdlineTuple) *DnsTransaction {
 	trans := &DnsTransaction{
 		Transport: tuple.Transport,
@@ -210,61 +263,6 @@ func (dns *Dns) deleteTransaction(k HashableDnsTuple) *DnsTransaction {
 	if v != nil {
 		return v.(*DnsTransaction)
 	}
-	return nil
-}
-
-func (dns *Dns) initDefaults() {
-	dns.Send_request = false
-	dns.Send_response = false
-	dns.Include_authorities = false
-	dns.Include_additionals = false
-	dns.transactionTimeout = protos.DefaultTransactionExpiration
-}
-
-func (dns *Dns) setFromConfig(config config.Dns) error {
-
-	dns.Ports = config.Ports
-
-	if config.SendRequest != nil {
-		dns.Send_request = *config.SendRequest
-	}
-	if config.SendResponse != nil {
-		dns.Send_response = *config.SendResponse
-	}
-	if config.Include_authorities != nil {
-		dns.Include_authorities = *config.Include_authorities
-	}
-	if config.Include_additionals != nil {
-		dns.Include_additionals = *config.Include_additionals
-	}
-	if config.TransactionTimeout != nil && *config.TransactionTimeout > 0 {
-		dns.transactionTimeout = time.Duration(*config.TransactionTimeout) * time.Second
-	}
-
-	return nil
-}
-
-func (dns *Dns) Init(test_mode bool, results publish.Transactions) error {
-	dns.initDefaults()
-	if !test_mode {
-		dns.setFromConfig(config.ConfigSingleton.Protocols.Dns)
-	}
-
-	dns.transactions = common.NewCacheWithRemovalListener(
-		dns.transactionTimeout,
-		protos.DefaultTransactionHashSize,
-		func(k common.Key, v common.Value) {
-			trans, ok := v.(*DnsTransaction)
-			if !ok {
-				logp.Err("Expired value is not a *DnsTransaction.")
-				return
-			}
-			dns.expireTransaction(trans)
-		})
-	dns.transactions.StartJanitor(dns.transactionTimeout)
-
-	dns.results = results
-
 	return nil
 }
 
@@ -408,10 +406,16 @@ func addDnsToMapStr(m common.MapStr, dns *mkdns.Msg, authority bool, additional 
 
 	if len(dns.Question) > 0 {
 		q := dns.Question[0]
-		m["question"] = common.MapStr{
+		qMapStr := common.MapStr{
 			"name":  q.Name,
 			"type":  dnsTypeToString(q.Qtype),
 			"class": dnsClassToString(q.Qclass),
+		}
+		m["question"] = qMapStr
+
+		eTLDPlusOne, err := publicsuffix.EffectiveTLDPlusOne(strings.TrimRight(q.Name, "."))
+		if err == nil {
+			qMapStr["etld_plus_one"] = eTLDPlusOne + "."
 		}
 	}
 

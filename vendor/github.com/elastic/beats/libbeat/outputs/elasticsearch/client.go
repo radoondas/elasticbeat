@@ -13,7 +13,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/dustin/go-humanize"
+	humanize "github.com/dustin/go-humanize"
 
 	"github.com/elastic/beats/libbeat/common"
 	"github.com/elastic/beats/libbeat/logp"
@@ -264,11 +264,11 @@ func bulkCollectPublishFails(
 
 		if status < 500 && status != 429 {
 			// hard failure, don't collect
-			logp.Warn("Can not index event (status=%v): %v", status, msg)
+			logp.Warn("Can not index event (status=%v): %s", status, msg)
 			continue
 		}
 
-		logp.Info("Bulk item insert failed (i=%v, status=%v): %v", i, status, msg)
+		logp.Info("Bulk item insert failed (i=%v, status=%v): %s", i, status, msg)
 		failed = append(failed, events[i])
 	}
 
@@ -463,6 +463,7 @@ func (conn *Connection) request(
 		var err error
 		obj, err = json.Marshal(body)
 		if err != nil {
+			logp.Warn("Failed to json encode body (%v): %#v", err, body)
 			return 0, nil, ErrJSONEncodeFailed
 		}
 	}

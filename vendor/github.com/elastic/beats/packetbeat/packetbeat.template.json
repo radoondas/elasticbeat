@@ -1,0 +1,84 @@
+{
+  "mappings": {
+    "_default_": {
+      "_all": {
+        "norms": false
+      },
+      "dynamic_templates": [
+        {
+          "template1": {
+            "mapping": {
+              "doc_values": true,
+              "ignore_above": 1024,
+              "index": true,
+              "type": "keyword"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "client_location": {
+          "type": "geo_point"
+        },
+        "dest": {
+          "properties": {
+            "ip_location": {
+              "type": "geo_point"
+            },
+            "ipv6_location": {
+              "type": "geo_point"
+            },
+            "outer_ip_location": {
+              "type": "geo_point"
+            },
+            "outer_ipv6_location": {
+              "type": "geo_point"
+            }
+          }
+        },
+        "last_time": {
+          "type": "date"
+        },
+        "params": {
+          "norms": false,
+          "type": "text"
+        },
+        "request": {
+          "norms": false,
+          "type": "text"
+        },
+        "response": {
+          "norms": false,
+          "type": "text"
+        },
+        "source": {
+          "properties": {
+            "ip_location": {
+              "type": "geo_point"
+            },
+            "ipv6_location": {
+              "type": "geo_point"
+            },
+            "outer_ip_location": {
+              "type": "geo_point"
+            },
+            "outer_ipv6_location": {
+              "type": "geo_point"
+            }
+          }
+        },
+        "start_time": {
+          "type": "date"
+        }
+      }
+    }
+  },
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "template": "packetbeat-*"
+}

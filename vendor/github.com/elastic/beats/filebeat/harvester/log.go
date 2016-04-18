@@ -23,6 +23,7 @@ func createLineReader(
 	bufferSize int,
 	maxBytes int,
 	readerConfig logFileReaderConfig,
+	jsonConfig *config.JSONConfig,
 	mlrConfig *config.MultilineConfig,
 ) (processor.LineProcessor, error) {
 	var p processor.LineProcessor
@@ -36,6 +37,10 @@ func createLineReader(
 	p, err = processor.NewLineSource(fileReader, codec, bufferSize)
 	if err != nil {
 		return nil, err
+	}
+
+	if jsonConfig != nil {
+		p = processor.NewJSONProcessor(p, jsonConfig)
 	}
 
 	if mlrConfig != nil {
@@ -98,7 +103,8 @@ func (h *Harvester) Harvest() {
 	}
 
 	reader, err := createLineReader(
-		h.file, enc, config.BufferSize, config.MaxBytes, readerConfig, config.Multiline)
+		h.file, enc, config.BufferSize, config.MaxBytes, readerConfig,
+		config.JSON, config.Multiline)
 	if err != nil {
 		logp.Err("Stop Harvesting. Unexpected encoding line reader error: %s", err)
 		return
@@ -106,7 +112,7 @@ func (h *Harvester) Harvest() {
 
 	for {
 		// Partial lines return error and are only read on completion
-		ts, text, bytesRead, err := readLine(reader)
+		ts, text, bytesRead, jsonFields, err := readLine(reader)
 		if err != nil {
 			if err == errFileTruncate {
 				seeker, ok := h.file.(io.Seeker)
@@ -127,20 +133,20 @@ func (h *Harvester) Harvest() {
 		}
 
 		if h.shouldExportLine(text) {
-			// Sends text to spooler
 			event := &input.FileEvent{
-				ReadTime:     ts,
-				Source:       &h.Path,
-				InputType:    h.Config.InputType,
-				DocumentType: h.Config.DocumentType,
-				Offset:       h.Offset,
-				Bytes:        bytesRead,
-				Text:         &text,
-				Fields:       h.Config.Fields,
-				Fileinfo:     &info,
+				EventMetadata: h.Config.EventMetadata,
+				ReadTime:      ts,
+				Source:        &h.Path,
+				InputType:     h.Config.InputType,
+				DocumentType:  h.Config.DocumentType,
+				Offset:        h.Offset,
+				Bytes:         bytesRead,
+				Text:          &text,
+				Fileinfo:      &info,
+				JSONFields:    jsonFields,
+				JSONConfig:    h.Config.JSON,
 			}
 
-			event.SetFieldsUnderRoot(h.Config.FieldsUnderRoot)
 			h.SpoolerChan <- event // ship the new event downstream
 		}
 
@@ -252,7 +258,4 @@ func (h *Harvester) initFileOffset(file *os.File) error {
 	}
 
 	return err
-}
-
-func (h *Harvester) Stop() {
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/elastic/beats/filebeat/input"
 	. "github.com/elastic/beats/filebeat/input"
 	"github.com/elastic/beats/libbeat/logp"
+	"github.com/elastic/beats/libbeat/paths"
 )
 
 type Registrar struct {
@@ -46,17 +47,12 @@ func (r *Registrar) Init() error {
 		r.registryFile = cfg.DefaultRegistryFile
 	}
 
-	// Make sure the directory where we store the registryFile exists
-	absPath, err := filepath.Abs(r.registryFile)
-	if err != nil {
-		return fmt.Errorf("Failed to get the absolute path of %s: %v",
-			r.registryFile, err)
-	}
-	r.registryFile = absPath
+	// The registry file is opened in the data path
+	r.registryFile = paths.Resolve(paths.Data, r.registryFile)
 
 	// Create directory if it does not already exist.
 	registryPath := filepath.Dir(r.registryFile)
-	err = os.MkdirAll(registryPath, 0755)
+	err := os.MkdirAll(registryPath, 0755)
 	if err != nil {
 		return fmt.Errorf("Failed to created registry file dir %s: %v",
 			registryPath, err)
@@ -68,7 +64,7 @@ func (r *Registrar) Init() error {
 }
 
 // loadState fetches the previous reading state from the configure RegistryFile file
-// The default file is .filebeat file which is stored in the same path as the binary is running
+// The default file is `registry` in the data path.
 func (r *Registrar) LoadState() {
 	if existing, e := os.Open(r.registryFile); e == nil {
 		defer existing.Close()
@@ -158,7 +154,7 @@ func (r *Registrar) fetchState(filePath string, fileInfo os.FileInfo) (int64, bo
 	lastState, isFound := r.GetFileState(filePath)
 
 	if isFound && input.IsSameFile(filePath, fileInfo) {
-		logp.Debug("registar", "Same file as before found. Fetch the state and persist it.")
+		logp.Debug("registrar", "Same file as before found. Fetch the state and persist it.")
 		// We're resuming - throw the last state back downstream so we resave it
 		// And return the offset - also force harvest in case the file is old and we're about to skip it
 		r.Persist <- lastState
@@ -181,7 +177,7 @@ func (r *Registrar) fetchState(filePath string, fileInfo os.FileInfo) (int64, bo
 		logp.Info("Not resuming rotated file: %s", filePath)
 	}
 
-	logp.Info("prospector", "New file. Start reading from the beginning: %s", filePath)
+	logp.Info("New file. Start reading from the beginning: %s", filePath)
 
 	// New file so just start from the beginning
 	return 0, false

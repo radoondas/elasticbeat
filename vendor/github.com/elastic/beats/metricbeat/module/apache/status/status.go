@@ -4,50 +4,90 @@ package status
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/elastic/beats/libbeat/common"
-
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/elastic/beats/metricbeat/helper"
-	"github.com/elastic/beats/metricbeat/module/apache"
+	_ "github.com/elastic/beats/metricbeat/module/apache"
 )
 
+const AUTO_STRING = "?auto"
+
 func init() {
-	MetricSet.Register()
+	helper.Registry.AddMetricSeter("apache", "status", New)
 }
 
-var MetricSet = helper.NewMetricSet("status", MetricSeter{}, apache.Module)
+// New creates new instance of MetricSeter
+func New() helper.MetricSeter {
+	return &MetricSeter{}
+}
 
 type MetricSeter struct {
+	ServerStatusPath string
+	Username         string
+	Password         string
+	Authentication   bool
 }
 
-func (m MetricSeter) Setup() error {
-	return nil
-}
+// Setup any metric specific configuration
+func (m *MetricSeter) Setup(ms *helper.MetricSet) error {
 
-func (m MetricSeter) Fetch() (events []common.MapStr, err error) {
-
-	hosts := MetricSet.Module.GetHosts()
-
-	for _, host := range hosts {
-		resp, err := http.Get(host + "server-status?auto")
-		defer resp.Body.Close()
-
-		if err != nil {
-			logp.Err("Error during Request: %s", err)
-		}
-
-		if resp.StatusCode != 200 {
-			return nil, fmt.Errorf("HTTP Error %s: %s", resp.StatusCode, resp.Status)
-		}
-
-		event := eventMapping(resp.Body)
-		events = append(events, event)
+	// Additional configuration options
+	config := struct {
+		ServerStatusPath string `config:"server_status_path"`
+		Username         string `config:"username"`
+		Password         string `config:"password"`
+	}{
+		ServerStatusPath: "server-status",
+		Username:         "",
+		Password:         "",
 	}
 
-	return events, nil
+	if err := ms.Module.ProcessConfig(&config); err != nil {
+		return err
+	}
+
+	m.ServerStatusPath = config.ServerStatusPath
+	m.Username = config.Username
+	m.Password = config.Password
+	if m.Password != "" && m.Username != "" {
+		m.Authentication = true
+	} else {
+		m.Authentication = false
+	}
+
+	return nil
 }
 
-func (m MetricSeter) Cleanup() error {
-	return nil
+func (m *MetricSeter) Fetch(ms *helper.MetricSet, host string) (event common.MapStr, err error) {
+
+	u, err := url.Parse(host + m.ServerStatusPath)
+	if err != nil {
+		logp.Err("Invalid Apache HTTPD server-status page: %v", err)
+		return nil, err
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", u.String()+AUTO_STRING, nil)
+
+	if m.Authentication {
+		req.SetBasicAuth(m.Username, m.Password)
+	}
+	resp, err := client.Do(req)
+
+	if resp == nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if err != nil {
+		return nil, fmt.Errorf("Error during Request: %s", err)
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("HTTP Error %d: %s", resp.StatusCode, resp.Status)
+	}
+
+	return eventMapping(resp.Body, u.Host, ms.Name), nil
 }

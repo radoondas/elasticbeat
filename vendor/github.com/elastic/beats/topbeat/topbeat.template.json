@@ -1,0 +1,110 @@
+{
+  "mappings": {
+    "_default_": {
+      "_all": {
+        "norms": false
+      },
+      "dynamic_templates": [
+        {
+          "template1": {
+            "mapping": {
+              "doc_values": true,
+              "ignore_above": 1024,
+              "index": true,
+              "type": "keyword"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "cpu": {
+          "properties": {
+            "system_p": {
+              "type": "float"
+            },
+            "user_p": {
+              "type": "float"
+            }
+          }
+        },
+        "cpus": {
+          "properties": {
+            "cpuX": {
+              "properties": {
+                "system_p": {
+                  "type": "float"
+                },
+                "user_p": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        },
+        "fs": {
+          "properties": {
+            "used_p": {
+              "type": "float"
+            }
+          }
+        },
+        "load": {
+          "properties": {
+            "load1": {
+              "type": "float"
+            },
+            "load15": {
+              "type": "float"
+            },
+            "load5": {
+              "type": "float"
+            }
+          }
+        },
+        "mem": {
+          "properties": {
+            "actual_used_p": {
+              "type": "float"
+            },
+            "used_p": {
+              "type": "float"
+            }
+          }
+        },
+        "proc": {
+          "properties": {
+            "cpu": {
+              "properties": {
+                "total_p": {
+                  "type": "float"
+                }
+              }
+            },
+            "mem": {
+              "properties": {
+                "rss_p": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        },
+        "swap": {
+          "properties": {
+            "used_p": {
+              "type": "float"
+            }
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "template": "topbeat-*"
+}

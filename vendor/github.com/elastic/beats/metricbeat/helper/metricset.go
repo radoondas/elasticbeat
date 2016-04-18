@@ -1,195 +1,192 @@
 package helper
 
 import (
-	"github.com/elastic/beats/libbeat/beat"
+	"expvar"
+	"fmt"
+	"sync/atomic"
+	"time"
+
 	"github.com/elastic/beats/libbeat/common"
 	"github.com/elastic/beats/libbeat/logp"
-	"gopkg.in/yaml.v2"
-	"sync"
-	"time"
 )
 
-// Base metric configuration
-type MetricSetConfig struct {
-	Period string
-}
+// expvar variables
+var (
+	fetchedEvents        = expvar.NewMap("fetchedEvents")
+	openMetricSetFetches = expvar.NewMap("openMetricSetFetches")
+)
+
+const (
+	// To prevent "too many open files" issue the number of concurrent fetchers per
+	// metricset instance is limited to 32. Concurrent fetching happens if the timeout
+	// is set bigger then period or if a fetch method does not timeout properly.
+	maxConcurrentFetchers = 32
+)
 
 // Metric specific data
 // This must be defined by each metric
 type MetricSet struct {
-	Name    string
-	Enabled bool
-
-	// Generic Config existing in all metrics
-	BaseConfig MetricSetConfig
-
-	// Raw metric specific config
-	// This is provided to convert it into Config later
-	RawConfig interface{}
-
-	// Metric specific config
-	Config interface{}
-
+	Name        string
 	MetricSeter MetricSeter
-	Module      *Module
+	// Inherits config from module
+	Config ModuleConfig
+	Module *Module
 
-	// Control channel
-	done chan struct{}
-}
-
-// Interface for each metric
-type MetricSeter interface {
-	// Setup needed for all upcoming fetches
-	// Typically config is loaded here
-	Setup() error
-
-	// Method to periodically fetch new events
-	Fetch() ([]common.MapStr, error)
-
-	// Cleanup when stopping metricset
-	Cleanup() error
+	fetchCounter uint32
 }
 
 // Creates a new MetricSet
-func NewMetricSet(name string, metricset MetricSeter, module *Module) *MetricSet {
-	return &MetricSet{
+func NewMetricSet(name string, new func() MetricSeter, module *Module) (*MetricSet, error) {
+	metricSeter := new()
+
+	ms := &MetricSet{
 		Name:        name,
-		MetricSeter: metricset,
+		MetricSeter: metricSeter,
+		Config:      module.Config,
 		Module:      module,
-		Enabled:     false,
-		done:        make(chan struct{}),
 	}
+
+	return ms, nil
 }
 
-func (m *MetricSet) LoadConfig(config interface{}) {
+func (m *MetricSet) Setup() error {
 
-	bytes, err := yaml.Marshal(m.RawConfig)
-
-	if err != nil {
-		logp.Err("Load metric config error: %v", err)
+	// In case no hosts are set, set at least an empty string
+	// This ensure that also for metricsets where host is not used
+	// That fetch is at least called once
+	if len(m.Config.Hosts) == 0 {
+		m.Config.Hosts = append(m.Config.Hosts, "")
 	}
-	yaml.Unmarshal(bytes, config)
+
+	// Host is a first class citizen and does not have to be handled by the metricset itself
+	return m.MetricSeter.Setup(m)
 }
 
-// Registers metric with module
-func (m *MetricSet) Register() {
-	m.Module.AddMetric(m)
+// RunMetric runs the given metricSet and returns the event
+func (m *MetricSet) Fetch() error {
+
+	for _, host := range m.Config.Hosts {
+
+		go func(h string) {
+
+			fetchCounter := m.incrementFetcher()
+			defer m.decrementFetcher()
+
+			var event common.MapStr
+			var err error
+
+			starttime := time.Now()
+
+			// Check if max number of concurrent fetchers is reached
+			if fetchCounter > maxConcurrentFetchers {
+				err = fmt.Errorf("Too many concurrent fetchers started for metricset %s", m.Name)
+				logp.Err("Too many concurrent fetchers started for metricset %s", m.Name)
+			} else {
+				// Fetch method must make sure to return error after Timeout reached
+				event, err = m.MetricSeter.Fetch(m, h)
+			}
+			elapsed := time.Since(starttime)
+
+			// expvar stats
+			baseName := m.Module.name + "-" + m.Name
+			if err != nil {
+				fetchedEvents.Add(baseName+"-failed", 1)
+			} else {
+				fetchedEvents.Add(baseName+"-success", 1)
+			}
+
+			event = m.createEvent(event, h, elapsed, err)
+
+			m.Module.Publish <- event
+
+		}(host)
+	}
+	return nil
 }
 
-// RunMetric runs the given metric
-func (m *MetricSet) Start(b *beat.Beat, wg sync.WaitGroup) {
+func (m *MetricSet) createEvent(event common.MapStr, host string, rtt time.Duration, eventErr error) common.MapStr {
 
-	// Catches metric in case of panic. Keeps other metricsets running
-	defer func() {
-		if r := recover(); r != nil {
-			logp.Err("Metric %s paniced and stopped running. Reason: %+v", m.Name, r)
+	// Most of the time, event is nil in case of error (not required)
+	if event == nil {
+		event = common.MapStr{}
+	}
+
+	timestamp := common.Time(time.Now())
+
+	// Default name is empty, means it will be metricbeat
+	indexName := ""
+	typeName := "metricsets"
+
+	// Set meta information dynamic if set
+	indexName = getIndex(event, indexName)
+	typeName = getType(event, typeName)
+	timestamp = getTimestamp(event, timestamp)
+
+	// Each metricset has a unique eventfieldname to prevent type conflicts
+	eventFieldName := m.Module.name + "-" + m.Name
+
+	event = applySelector(event, m.Config.Selectors)
+
+	event = common.MapStr{
+		"type":                  typeName,
+		eventFieldName:          event,
+		"metricset":             m.Name,
+		"module":                m.Module.name,
+		"rtt":                   rtt.Nanoseconds() / int64(time.Microsecond),
+		"@timestamp":            timestamp,
+		common.EventMetadataKey: m.Config.EventMetadata,
+	}
+
+	// Overwrite index in case it is set
+	if indexName != "" {
+		event["beat"] = common.MapStr{
+			"index": indexName,
 		}
-		wg.Done()
-	}()
-
-	// Only starts metricset if enabled
-	if !m.Enabled {
-		logp.Debug("helper", "Not starting metric %s as not enabled.", m.Name)
-		return
 	}
 
-	// Setup
-	err := m.MetricSeter.Setup()
-	if err != nil {
-		logp.Err("Error happening during metricseter setup: %s", err)
-	}
-	period, err := time.ParseDuration(m.BaseConfig.Period)
-
-	if err != nil {
-		logp.Info("Error in parsing period of metric %s: %v", m.Name, err)
+	// Adds host name to event. In case credentials are passed through hostname, these are contained in this string
+	if host != "" {
+		event["metricset-host"] = host
 	}
 
-	// If no period set, set default
-	if period == 0 {
-		logp.Info("Setting default period for metric %s as not set.", m.Name)
-		period = 1 * time.Second
+	// Adds error to event in case error happened
+	if eventErr != nil {
+		event["error"] = eventErr.Error()
 	}
 
-	ticker := time.NewTicker(period)
-	defer ticker.Stop()
-
-	logp.Info("Start metric %s with period %v", m.Name, period)
-
-	for {
-		select {
-		case <-m.done:
-			logp.Info("Stopping metricset: %s", m.Name)
-			return
-		case <-ticker.C:
-		}
-
-		events, err := m.MetricSeter.Fetch()
-		if err != nil {
-			logp.Err("Fetching events in MetricSet %s returned error: %s", m.Name, err)
-			continue
-		}
-		newEvents := []common.MapStr{}
-
-		// Default names based on module and metric
-		// These can be overwritten by setting index or / and type in the event
-		indexName := ""
-
-		// Type is the same for all metricsets
-		typeName := "metricsets"
-		timestamp := common.Time(time.Now())
-
-		for _, event := range events {
-			// Set index from event if set
-			if _, ok := event["index"]; ok {
-				indexName = event["index"].(string)
-				delete(event, "index")
-			}
-
-			// Set type from event if set
-			if _, ok := event["type"]; ok {
-				typeName = event["type"].(string)
-				delete(event, "type")
-			}
-
-			// Set timestamp from event if set, move it to the top level
-			// If not set, timestamp is created
-			if _, ok := event["@timestamp"]; ok {
-				timestamp = event["@timestamp"].(common.Time)
-				delete(event, "@timestamp")
-			}
-
-			eventFieldName := m.Module.Name + "-" + m.Name
-			// TODO: Add fields_under_root option for "metrics"?
-			event = common.MapStr{
-				"type":         typeName,
-				eventFieldName: event,
-				"metricset":    m.Name,
-				"module":       m.Module.Name,
-				"@timestamp":   timestamp,
-			}
-
-			// Overwrite index in case it is set
-			if indexName != "" {
-				event["beat"] = common.MapStr{
-					"index": indexName,
-				}
-			}
-
-			newEvents = append(newEvents, event)
-		}
-
-		// Async publishing of event
-		b.Events.PublishEvents(newEvents)
-	}
+	return event
 }
 
-// Stop stops the metricset
-func (m *MetricSet) Stop() {
-	logp.Info("Stopping metricset: %s", m.Name)
-	close(m.done)
+func applySelector(event common.MapStr, selectors []string) common.MapStr {
 
-	err := m.MetricSeter.Cleanup()
-	if err != nil {
-		logp.Err("Error cleaning up metricset %s: %s", m.Name, err)
+	// No selectors set means return full events
+	if len(selectors) == 0 {
+		return event
 	}
+
+	newEvent := common.MapStr{}
+	logp.Debug("metricset", "Applying selectors: %v", selectors)
+
+	for _, selector := range selectors {
+
+		if value, ok := event[selector]; ok {
+			newEvent[selector] = value
+		}
+
+	}
+
+	return newEvent
+}
+
+// incrementFetcher increments the number of open fetcher
+func (m *MetricSet) incrementFetcher() uint32 {
+	openMetricSetFetches.Add(m.Module.name+"-"+m.Name, 1)
+	return atomic.AddUint32(&m.fetchCounter, 1)
+}
+
+// decrementFetcher decrements the number of open fetchers
+func (m *MetricSet) decrementFetcher() uint32 {
+	openMetricSetFetches.Add(m.Module.name+"-"+m.Name, -1)
+	// Decrements value by 1
+	return atomic.AddUint32(&m.fetchCounter, ^uint32(0))
 }

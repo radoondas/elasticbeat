@@ -36,12 +36,12 @@ func NewProspectorLog(p *Prospector) (*ProspectorLog, error) {
 	return prospectorer, nil
 }
 
-func (p ProspectorLog) Init() {
+func (p *ProspectorLog) Init() {
 	logp.Debug("prospector", "exclude_files: %s", p.config.ExcludeFiles)
 	p.scan()
 }
 
-func (p ProspectorLog) Run() {
+func (p *ProspectorLog) Run() {
 
 	logp.Debug("prospector", "Start next scan")
 	p.scan()
@@ -61,7 +61,7 @@ func (p ProspectorLog) Run() {
 }
 
 // Scan starts a scanGlob for each provided path/glob
-func (p ProspectorLog) scan() {
+func (p *ProspectorLog) scan() {
 
 	newlastscan := time.Now()
 
@@ -74,7 +74,7 @@ func (p ProspectorLog) scan() {
 
 // Scans the specific path which can be a glob (/**/**/*.log)
 // For all found files it is checked if a harvester should be started
-func (p ProspectorLog) scanGlob(glob string) {
+func (p *ProspectorLog) scanGlob(glob string) {
 
 	logp.Debug("prospector", "scan path %s", glob)
 
@@ -145,15 +145,16 @@ func (p ProspectorLog) scanGlob(glob string) {
 
 // Check if harvester for new file has to be started
 // For a new file the following options exist:
-func (p ProspectorLog) checkNewFile(h *harvester.Harvester) {
+func (p *ProspectorLog) checkNewFile(h *harvester.Harvester) {
 
 	logp.Debug("prospector", "Start harvesting unknown file: %s", h.Path)
+
+	// Call crawler if there if there exists a state for the given file
+	offset, resuming := p.Prospector.registrar.fetchState(h.Path, h.Stat.Fileinfo)
 
 	if p.checkOldFile(h) {
 
 		logp.Debug("prospector", "Fetching old state of file to resume: %s", h.Path)
-		// Call crawler if there if there exists a state for the given file
-		offset, resuming := p.Prospector.registrar.fetchState(h.Path, h.Stat.Fileinfo)
 
 		// Are we resuming a dead file? We have to resume even if dead so we catch any old updates to the file
 		// This is safe as the harvester, once it hits the EOF and a timeout, will stop harvesting
@@ -172,15 +173,13 @@ func (p ProspectorLog) checkNewFile(h *harvester.Harvester) {
 	} else if previousFile, err := p.getPreviousFile(h.Path, h.Stat.Fileinfo); err == nil {
 		p.continueExistingFile(h, previousFile)
 	} else {
-		// Call crawler if there if there exists a state for the given file
-		offset, _ := p.Prospector.registrar.fetchState(h.Path, h.Stat.Fileinfo)
 		p.resumeHarvesting(h, offset)
 	}
 }
 
 // checkOldFile returns true if the given file is currently not harvested
 // and the last time was modified before ignore_older
-func (p ProspectorLog) checkOldFile(h *harvester.Harvester) bool {
+func (p *ProspectorLog) checkOldFile(h *harvester.Harvester) bool {
 
 	// Resuming never needed if ignore_older disabled
 	if p.config.IgnoreOlderDuration == 0 {
@@ -209,7 +208,7 @@ func (p ProspectorLog) checkOldFile(h *harvester.Harvester) bool {
 // * The new file is not the same as the old file, means file was renamed
 // ** New file is actually really a new file, start a new harvester
 // ** Renamed file has a state, continue there
-func (p ProspectorLog) checkExistingFile(h *harvester.Harvester, newFile *input.File, oldFile *input.File) {
+func (p *ProspectorLog) checkExistingFile(h *harvester.Harvester, newFile *input.File, oldFile *input.File) {
 
 	logp.Debug("prospector", "Update existing file for harvesting: %s", h.Path)
 
@@ -248,7 +247,7 @@ func (p ProspectorLog) checkExistingFile(h *harvester.Harvester, newFile *input.
 // Continue reading on an existing file.
 // The given file was renamed from another file we know -> The same harvester channel is linked as the old file
 // The file param is only used for logging
-func (p ProspectorLog) continueExistingFile(h *harvester.Harvester, previousFile string) {
+func (p *ProspectorLog) continueExistingFile(h *harvester.Harvester, previousFile string) {
 	logp.Debug("prospector", "Launching harvester on renamed file. File rename was detected: %s -> %s", previousFile, h.Path)
 
 	lastinfo := p.prospectorList[previousFile]
@@ -256,7 +255,7 @@ func (p ProspectorLog) continueExistingFile(h *harvester.Harvester, previousFile
 }
 
 // Start / resume harvester with a predefined offset
-func (p ProspectorLog) resumeHarvesting(h *harvester.Harvester, offset int64) {
+func (p *ProspectorLog) resumeHarvesting(h *harvester.Harvester, offset int64) {
 
 	logp.Debug("prospector", "Start / resuming harvester of file: %s", h.Path)
 	h.Offset = offset
@@ -266,7 +265,7 @@ func (p ProspectorLog) resumeHarvesting(h *harvester.Harvester, offset int64) {
 // Check if the given file was renamed. If file is known but with different path,
 // the previous file path will be returned. If no file is found, an error
 // will be returned.
-func (p ProspectorLog) getPreviousFile(file string, info os.FileInfo) (string, error) {
+func (p *ProspectorLog) getPreviousFile(file string, info os.FileInfo) (string, error) {
 
 	for path, pFileStat := range p.prospectorList {
 		if path == file {
@@ -289,7 +288,7 @@ func (p ProspectorLog) getPreviousFile(file string, info os.FileInfo) (string, e
 	return "", fmt.Errorf("No previous file found")
 }
 
-func (p ProspectorLog) isFileExcluded(file string) bool {
+func (p *ProspectorLog) isFileExcluded(file string) bool {
 
 	if len(p.config.ExcludeFilesRegexp) > 0 {
 

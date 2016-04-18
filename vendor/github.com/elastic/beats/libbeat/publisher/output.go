@@ -2,6 +2,7 @@ package publisher
 
 import (
 	"errors"
+	"time"
 
 	"github.com/elastic/beats/libbeat/common"
 	"github.com/elastic/beats/libbeat/logp"
@@ -11,36 +12,55 @@ import (
 type outputWorker struct {
 	messageWorker
 	out         outputs.BulkOutputer
-	config      outputs.MothershipConfig
+	config      outputConfig
 	maxBulkSize int
 }
+
+type outputConfig struct {
+	BulkMaxSize   int           `config:"bulk_max_size"`
+	FlushInterval time.Duration `config:"flush_interval"`
+}
+
+var (
+	defaultConfig = outputConfig{
+		FlushInterval: 1 * time.Second,
+		BulkMaxSize:   2048,
+	}
+)
 
 var (
 	errSendFailed = errors.New("failed send attempt")
 )
 
 func newOutputWorker(
-	config outputs.MothershipConfig,
+	cfg *common.Config,
 	out outputs.Outputer,
-	ws *workerSignal,
+	ws *common.WorkerSignal,
 	hwm int,
 	bulkHWM int,
 ) *outputWorker {
-	maxBulkSize := defaultBulkSize
-	if config.BulkMaxSize != nil {
-		maxBulkSize = *config.BulkMaxSize
+	config := defaultConfig
+	err := cfg.Unpack(&config)
+	if err != nil {
+		logp.Err("Failed to read output worker config: %v", err)
+		return nil
 	}
 
 	o := &outputWorker{
 		out:         outputs.CastBulkOutputer(out),
 		config:      config,
-		maxBulkSize: maxBulkSize,
+		maxBulkSize: config.BulkMaxSize,
 	}
 	o.messageWorker.init(ws, hwm, bulkHWM, o)
 	return o
 }
 
-func (o *outputWorker) onStop() {}
+func (o *outputWorker) onStop() {
+	err := o.out.Close()
+	if err != nil {
+		logp.Info("Failed to close outputer: %s", err)
+	}
+}
 
 func (o *outputWorker) onMessage(m message) {
 	if m.event != nil {
@@ -52,7 +72,7 @@ func (o *outputWorker) onMessage(m message) {
 
 func (o *outputWorker) onEvent(ctx *Context, event common.MapStr) {
 	debug("output worker: publish single event")
-	o.out.PublishEvent(ctx.Signal, outputs.Options{ctx.Guaranteed}, event)
+	o.out.PublishEvent(ctx.Signal, outputs.Options{Guaranteed: ctx.Guaranteed}, event)
 }
 
 func (o *outputWorker) onBulk(ctx *Context, events []common.MapStr) {
@@ -86,7 +106,7 @@ func (o *outputWorker) sendBulk(
 ) {
 	debug("output worker: publish %v events", len(events))
 
-	opts := outputs.Options{ctx.Guaranteed}
+	opts := outputs.Options{Guaranteed: ctx.Guaranteed}
 	err := o.out.BulkPublish(ctx.Signal, opts, events)
 	if err != nil {
 		logp.Info("Error bulk publishing events: %s", err)

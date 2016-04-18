@@ -1,3 +1,5 @@
+// +build !integration
+
 package mode
 
 import (
@@ -22,9 +24,8 @@ func TestAsyncLBStartStop(t *testing.T) {
 }
 
 func testAsyncLBFailSendWithoutActiveConnection(t *testing.T, events []eventInfo) {
-	if testing.Verbose() {
-		logp.LogInit(logp.LOG_DEBUG, "", false, true, []string{"*"})
-	}
+	enableLogging([]string{"*"})
+
 	errFail := errors.New("fail connect")
 	mode, _ := NewAsyncConnectionMode(
 		[]AsyncProtocolClient{
@@ -57,6 +58,8 @@ func TestAsyncLBFailSendMultWithoutActiveConnections(t *testing.T) {
 }
 
 func testAsyncLBOKSend(t *testing.T, events []eventInfo) {
+	enableLogging([]string{"*"})
+
 	var collected [][]common.MapStr
 	mode, _ := NewAsyncConnectionMode(
 		[]AsyncProtocolClient{

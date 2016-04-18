@@ -1,0 +1,44 @@
+{
+  "mappings": {
+    "_default_": {
+      "_all": {
+        "norms": false
+      },
+      "dynamic_templates": [
+        {
+          "template1": {
+            "mapping": {
+              "doc_values": true,
+              "ignore_above": 1024,
+              "index": true,
+              "type": "keyword"
+            },
+            "match_mapping_type": "string"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "event_id": {
+          "type": "long"
+        },
+        "message": {
+          "norms": false,
+          "type": "text"
+        },
+        "process_id": {
+          "type": "long"
+        },
+        "thread_id": {
+          "type": "long"
+        }
+      }
+    }
+  },
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "template": "winlogbeat-*"
+}

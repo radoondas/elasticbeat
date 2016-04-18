@@ -1,37 +1,25 @@
 package redis
 
 import (
+	"github.com/garyburd/redigo/redis"
+
 	"github.com/elastic/beats/libbeat/logp"
 
 	"github.com/elastic/beats/metricbeat/helper"
-
-	"github.com/garyburd/redigo/redis"
-
-	"os"
 )
 
 func init() {
-	Module.Register()
+	helper.Registry.AddModuler("redis", New)
 }
 
-var Module = helper.NewModule("redis", Redis{})
-
-var Config = &RedisModuleConfig{}
-
-type RedisModuleConfig struct {
-	Metrics map[string]interface{}
-	Hosts   []string
+// New creates new instance of Moduler
+func New() helper.Moduler {
+	return &Moduler{}
 }
 
-type Redis struct {
-	Name   string
-	Config RedisModuleConfig
-}
+type Moduler struct{}
 
-func (r Redis) Setup() error {
-	// Loads module config
-	// This is module specific config object
-	Module.LoadConfig(&Config)
+func (m *Moduler) Setup(mo *helper.Module) error {
 	return nil
 }
 
@@ -44,24 +32,4 @@ func Connect(host string) (redis.Conn, error) {
 
 	//defer conn.Close()
 	return conn, err
-}
-
-///*** Helper functions for testing ***///
-
-func GetRedisEnvHost() string {
-	host := os.Getenv("REDIS_HOST")
-
-	if len(host) == 0 {
-		host = "127.0.0.1"
-	}
-	return host
-}
-
-func GetRedisEnvPort() string {
-	port := os.Getenv("REDIS_PORT")
-
-	if len(port) == 0 {
-		port = "6379"
-	}
-	return port
 }

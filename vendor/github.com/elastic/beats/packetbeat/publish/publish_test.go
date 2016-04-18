@@ -1,3 +1,5 @@
+// +build !integration
+
 package publish
 
 import (
@@ -79,7 +81,7 @@ func TestDirectionOut(t *testing.T) {
 		},
 	}
 
-	assert.True(t, updateEventAddresses(publisher, event))
+	assert.True(t, normalizeTransAddr(publisher, event))
 	assert.True(t, event["client_ip"] == "192.145.2.4")
 	assert.True(t, event["direction"] == "out")
 }
@@ -104,7 +106,7 @@ func TestDirectionIn(t *testing.T) {
 		},
 	}
 
-	assert.True(t, updateEventAddresses(publisher, event))
+	assert.True(t, normalizeTransAddr(publisher, event))
 	assert.True(t, event["client_ip"] == "192.145.2.4")
 	assert.True(t, event["direction"] == "in")
 }
@@ -135,7 +137,7 @@ func TestNoDirection(t *testing.T) {
 		},
 	}
 
-	assert.True(t, updateEventAddresses(publisher, event))
+	assert.True(t, normalizeTransAddr(publisher, event))
 	assert.True(t, event["client_ip"] == "192.145.2.4")
 	_, ok := event["direction"]
 	assert.False(t, ok)

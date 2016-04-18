@@ -1,42 +1,50 @@
 package mysql
 
 import (
+	"database/sql"
+
 	"github.com/elastic/beats/metricbeat/helper"
 
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-
-	"os"
 )
 
 func init() {
-	Module.Register()
+	helper.Registry.AddModuler("mysql", New)
 }
 
-// Module object
-var Module = helper.NewModule("mysql", Mysql{})
-
-type Mysql struct {
+// New creates new instance of Moduler
+func New() helper.Moduler {
+	return &Moduler{}
 }
 
-func (b Mysql) Setup() error {
-	// TODO: Ping available servers to check if available
+type Moduler struct{}
+
+func (m *Moduler) Setup(mo *helper.Module) error {
 	return nil
+}
+
+// CreateDSN creates a dsn string out of hostname, username and password
+func CreateDSN(host string, username string, password string) string {
+	// Example: [username[:password]@][protocol[(address)]]/
+
+	dsn := host
+
+	if username != "" || password != "" {
+		dsn = "@" + dsn
+	}
+
+	if password != "" {
+		dsn = ":" + password + dsn
+	}
+
+	if username != "" {
+		dsn = username + dsn
+	}
+	return dsn
 }
 
 // Connect expects a full mysql dsn
 // Example: [username[:password]@][protocol[(address)]]/
 func Connect(dsn string) (*sql.DB, error) {
 	return sql.Open("mysql", dsn)
-}
-
-///*** Testing helpers ***///
-
-func GetMySQLEnvDSN() string {
-	dsn := os.Getenv("MYSQL_DSN")
-
-	if len(dsn) == 0 {
-		dsn = "root@tcp(127.0.0.1:3306)/"
-	}
-	return dsn
 }

@@ -1,8 +1,10 @@
 = Filebeat Reference
 :libbeat: http://www.elastic.co/guide/en/beats/libbeat/master
-:version: master
+:elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/master/
+:version: 5.0.0-alpha1
 :beatname_lc: filebeat
 :beatname_uc: Filebeat
+:security: X-Pack Security
 
 include::./overview.asciidoc[]
 
@@ -12,13 +14,19 @@ include::./command-line.asciidoc[]
 
 include::./configuring-howto.asciidoc[]
 
+include::./filebeat-filtering.asciidoc[]
+
+include::../../libbeat/docs/shared-config-ingest.asciidoc[]
+
+include::../../libbeat/docs/shared-env-vars.asciidoc[]
+
 include::../../libbeat/docs/https.asciidoc[]
 
 include::./multiple-prospectors.asciidoc[]
 
 include::./troubleshooting.asciidoc[]
 
-//include::./faq.asciidoc[]
+include::./faq.asciidoc[]
 
 include::./migration.asciidoc[]
 

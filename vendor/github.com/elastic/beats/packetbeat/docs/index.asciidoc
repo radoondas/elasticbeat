@@ -1,8 +1,10 @@
 = Packetbeat Reference
 :libbeat: http://www.elastic.co/guide/en/beats/libbeat/master
-:version: master
+:elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/master/
+:version: 5.0.0-alpha1
 :beatname_lc: packetbeat
 :beatname_uc: Packetbeat
+:security: X-Pack Security
 
 include::./overview.asciidoc[]
 
@@ -11,6 +13,14 @@ include::./gettingstarted.asciidoc[]
 include::./command-line.asciidoc[]
 
 include::./configuring-howto.asciidoc[]
+
+include::./packetbeat-filtering.asciidoc[]
+
+include::../../libbeat/docs/shared-config-ingest.asciidoc[]
+
+include::./configuring-logstash.asciidoc[]
+
+include::../../libbeat/docs/shared-env-vars.asciidoc[]
 
 include::../../libbeat/docs/https.asciidoc[]
 
@@ -28,7 +38,7 @@ include::./kibana3.asciidoc[]
 
 include::./troubleshooting.asciidoc[]
 
-//include::./faq.asciidoc[]
+include::./faq.asciidoc[]
 
 include::./reference.asciidoc[]
 

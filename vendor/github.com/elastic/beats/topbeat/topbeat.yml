@@ -1,7 +1,7 @@
 ################### Topbeat Configuration Example #########################
 
-############################# Input ############################################
-input:
+############################# Topbeat ############################################
+topbeat:
   # In seconds, defines how often to read server statistics
   period: 10
 
@@ -15,7 +15,7 @@ input:
     system: true
 
     # per process statistics, by default is true
-    proc: true
+    process: true
 
     # file system information, by default is true
     filesystem: true
@@ -60,18 +60,18 @@ output:
     #index: "topbeat"
 
     # A template is used to set the mapping in Elasticsearch
-    # By default template loading is disabled and no template is loaded.
+    # By default template loading is enabled and the template is loaded.
     # These settings can be adjusted to load your own template or overwrite existing ones
-    #template:
+    template:
 
       # Template name. By default the template name is topbeat.
-      #name: "topbeat"
+      name: "topbeat"
 
       # Path to template file
-      #path: "topbeat.template.json"
+      path: "topbeat.template.json"
 
       # Overwrite existing template
-      #overwrite: false
+      overwrite: false
 
     # Optional HTTP Path
     #path: "/elasticsearch"
@@ -148,10 +148,15 @@ output:
     # Optional load balance the events between the Logstash hosts
     #loadbalance: true
 
-    # Optional index name. The default index name depends on the each beat.
-    # For Packetbeat, the default is set to packetbeat, for Topbeat
-    # top topbeat and for Filebeat to filebeat.
+    # Optional index name. The default index name is set to name of the beat
+    # in all lowercase.
     #index: topbeat
+
+    # SOCKS5 proxy server URL
+    #proxy_url: socks5://user:password@socks5-server:2233
+
+    # Resolve names locally when using a proxy server. Defaults to false.
+    #proxy_use_local_resolver: false
 
     # Optional TLS. By default is off.
     #tls:
@@ -186,7 +191,7 @@ output:
     #filename: topbeat
 
     # Maximum size in kilobytes of each file. When this size is reached, the files are
-    # rotated. The default value is 10 MB.
+    # rotated. The default value is 10240 kB.
     #rotate_every_kb: 10000
 
     # Maximum number of files under path. When this number of files is reached, the
@@ -213,6 +218,17 @@ shipper:
   # transaction published. Tags make it easy to group servers by different
   # logical properties.
   #tags: ["service-X", "web-tier"]
+
+  # Optional fields that you can specify to add additional information to the
+  # output. Fields can be scalar values, arrays, dictionaries, or any nested
+  # combination of these.
+  #fields:
+  #  env: staging
+
+  # If this option is set to true, the custom fields are stored as top-level
+  # fields in the output document instead of being grouped under a fields
+  # sub-dictionary. Default is false.
+  #fields_under_root: false
 
   # Uncomment the following if you want to ignore transactions created
   # by the server on which the shipper is installed. This option is useful
@@ -245,7 +261,7 @@ shipper:
 
 ############################# Logging #########################################
 
-# There are three options for the log ouput: syslog, file, stderr.
+# There are three options for the log output: syslog, file, stderr.
 # Under Windows systems, the log files are per default sent to the file output,
 # under all other system per default to syslog.
 logging:

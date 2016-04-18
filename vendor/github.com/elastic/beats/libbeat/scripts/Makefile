@@ -107,8 +107,6 @@ ci:
 .PHONY: prepare-tests
 prepare-tests:
 	mkdir -p ${COVERAGE_DIR}
-	# coverage tools
-	go get golang.org/x/tools/cmd/cover
 	# gotestcover is needed to fetch coverage for multiple packages
 	go get github.com/pierrre/gotestcover
 
@@ -116,24 +114,25 @@ prepare-tests:
 # Race is not enabled for unit tests because tests run much slower.
 .PHONY: unit-tests
 unit-tests: prepare-tests
-	$(GOPATH)/bin/gotestcover -coverprofile=${COVERAGE_DIR}/unit.cov -short ${GOPACKAGES}
+	$(GOPATH)/bin/gotestcover $(RACE) -coverprofile=${COVERAGE_DIR}/unit.cov  ${GOPACKAGES}
+
 
 # Runs the unit tests without coverage reports.
 .PHONY: unit
 unit:
-	go test $(RACE) -short ./...
+	go test $(RACE) ${GOPACKAGES}
 
 # Run integration tests. Unit tests are run as part of the integration tests.
 .PHONY: integration-tests
 integration-tests: prepare-tests
-	$(GOPATH)/bin/gotestcover $(RACE) -coverprofile=${COVERAGE_DIR}/integration.cov ${GOPACKAGES}
+	$(GOPATH)/bin/gotestcover -tags=integration $(RACE) -coverprofile=${COVERAGE_DIR}/integration.cov  ${GOPACKAGES}
 
 # Runs the integration inside a virtual environment. This can be run on any docker-machine (local, remote)
 .PHONY: integration-tests-environment
 integration-tests-environment:
 	$(MAKE) prepare-tests
 	$(MAKE) build-image
-	${DOCKER_COMPOSE} run beat make integration-tests
+	${DOCKER_COMPOSE} run beat make integration-tests RACE_DETECTOR=$(RACE_DETECTOR)
 
 # Runs the system tests
 .PHONY: system-tests
@@ -144,7 +143,13 @@ system-tests: buildbeat.test prepare-tests python-env
 # Runs system tests without coverage reports and in parallel
 .PHONY: fast-system-tests
 fast-system-tests: buildbeat.test python-env
-	. ${PYTHON_ENV}/bin/activate; nosetests -w tests/system --processes=$(PROCESSES) --process-timeout=$(TIMEOUT)
+	. ${PYTHON_ENV}/bin/activate; nosetests -w tests/system --processes=$(PROCESSES) --process-timeout=$(TIMEOUT) -a '!integration'
+
+# Run benchmark tests
+.PHONY: benchmark-tests
+benchmark-tests:
+	# No benchmark tests exist so far
+	#go test -bench=. ${GOPACKAGES}
 
 # Sets up the virtual python environment
 .PHONY: python-env
@@ -156,12 +161,6 @@ python-env: ${ES_BEATS}/libbeat/tests/system/requirements.txt
 		. ${PYTHON_ENV}/bin/activate && pip install -Ur ${ES_BEATS}/libbeat/tests/system/requirements.txt ; \
 	fi
 
-# Run benchmark tests
-.PHONY: benchmark-tests
-benchmark-tests:
-	# No benchmark tests exist so far
-	#go test -short -bench=. ./...
-
 # Runs unit and system tests without coverage reports
 .PHONY: test
 test: unit
@@ -172,6 +171,8 @@ test: unit
 # Runs all tests and generates the coverage reports
 .PHONY: testsuite
 testsuite:
+	$(MAKE) unit-tests
+
 	# Setups environment if TEST_ENVIRONMENT is set to true
 	if [ $(TEST_ENVIRONMENT) = true ]; then \
 		 $(MAKE) integration-tests-environment; \
@@ -205,7 +206,16 @@ coverage-report:
 update:
 	bash ${ES_BEATS}/libbeat/scripts/update.sh ${BEATNAME} ${BEAT_DIR}/${BEATNAME} ${ES_BEATS}/libbeat
 
+### KIBANA FILES HANDLING ###
+ES_URL?=http://localhost:9200/
 
+.PHONY: update
+export-dashboards:
+	python ${ES_BEATS}/dev-tools//export_dashboards.py --url ${ES_URL} --dir $(shell pwd)/etc/kibana --beat ${BEATNAME}
+
+.PHONY: update
+import-dashboards:
+	bash ${ES_BEATS}/dev-tools/import_dashboards.sh -url ${ES_URL} -dir $(shell pwd)/etc/kibana
 
 ### CONTAINER ENVIRONMENT ####
 
@@ -233,3 +243,18 @@ write-environment:
 	echo "ES_PORT=9200" >> ${BUILD_DIR}/test.env
 	echo "ES_USER=beats" >> ${BUILD_DIR}/test.env
 	echo "ES_PASS=testing" >> ${BUILD_DIR}/test.env
+
+
+### Packaging targets ####
+
+# Installs the files that need to get to the home path on installations
+HOME_PREFIX?=/tmp/${BEATNAME}
+.PHONY: install-home
+install-home:
+	mkdir -p ${HOME_PREFIX}
+	if [ -d "etc/kibana" ]; then \
+		cp -r etc/kibana ${HOME_PREFIX}/kibana; \
+		install -m 755  ../dev-tools/import_dashboards.sh ${HOME_PREFIX}/kibana/; \
+		install -m 755 ../dev-tools/import_dashboards.ps1 ${HOME_PREFIX}/kibana/; \
+	fi
+

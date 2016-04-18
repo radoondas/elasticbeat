@@ -1,3 +1,5 @@
+// +build !integration
+
 package publisher
 
 import (
@@ -15,6 +17,10 @@ type testOutputer struct {
 
 var _ outputs.Outputer = &testOutputer{}
 
+func (t *testOutputer) Close() error {
+	return nil
+}
+
 // PublishEvent writes events to a channel then calls Completed on trans.
 // It always returns nil.
 func (t *testOutputer) PublishEvent(trans outputs.Signaler, opts outputs.Options,
@@ -28,9 +34,9 @@ func (t *testOutputer) PublishEvent(trans outputs.Signaler, opts outputs.Options
 func TestOutputWorker(t *testing.T) {
 	outputer := &testOutputer{events: make(chan common.MapStr, 10)}
 	ow := newOutputWorker(
-		outputs.MothershipConfig{},
+		common.NewConfig(),
 		outputer,
-		newWorkerSignal(),
+		common.NewWorkerSignal(),
 		1, 0)
 
 	ow.onStop() // Noop

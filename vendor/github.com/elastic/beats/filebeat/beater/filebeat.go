@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/elastic/beats/libbeat/beat"
-	"github.com/elastic/beats/libbeat/cfgfile"
 	"github.com/elastic/beats/libbeat/logp"
 
 	cfg "github.com/elastic/beats/filebeat/config"
@@ -19,7 +18,7 @@ type Filebeat struct {
 	publisherChan chan []*input.FileEvent
 	spooler       *Spooler
 	registrar     *crawler.Registrar
-	cralwer       *crawler.Crawler
+	crawler       *crawler.Crawler
 	done          chan struct{}
 }
 
@@ -32,7 +31,7 @@ func New() *Filebeat {
 func (fb *Filebeat) Config(b *beat.Beat) error {
 
 	// Load Base config
-	err := cfgfile.Read(&fb.FbConfig, "")
+	err := b.RawConfig.Unpack(&fb.FbConfig)
 
 	if err != nil {
 		return fmt.Errorf("Error reading config file: %v", err)
@@ -66,7 +65,7 @@ func (fb *Filebeat) Run(b *beat.Beat) error {
 		return err
 	}
 
-	fb.cralwer = &crawler.Crawler{
+	fb.crawler = &crawler.Crawler{
 		Registrar: fb.registrar,
 	}
 
@@ -87,7 +86,7 @@ func (fb *Filebeat) Run(b *beat.Beat) error {
 	// registrar records last acknowledged positions in all files.
 	go fb.registrar.Run()
 
-	err = fb.cralwer.Start(fb.FbConfig.Filebeat.Prospectors, fb.spooler.Channel)
+	err = fb.crawler.Start(fb.FbConfig.Filebeat.Prospectors, fb.spooler.Channel)
 	if err != nil {
 		return err
 	}
@@ -115,7 +114,7 @@ func (fb *Filebeat) Stop() {
 
 	logp.Info("Stopping filebeat")
 	// Stop crawler -> stop prospectors -> stop harvesters
-	fb.cralwer.Stop()
+	fb.crawler.Stop()
 
 	// Stopping spooler will flush items
 	fb.spooler.Stop()

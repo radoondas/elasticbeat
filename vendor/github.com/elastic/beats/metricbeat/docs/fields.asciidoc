@@ -9,3 +9,483 @@ This file is generated! See etc/fields.yml and scripts/generate_field_docs.py
 This document describes the fields that are exported by Metricbeat. They are
 grouped in the following categories:
 
+* <<exported-fields-common>>
+* <<exported-fields-apache-status>>
+* <<exported-fields-redis-info>>
+* <<exported-fields-mysql-status>>
+
+[[exported-fields-common]]
+=== Common fields Fields
+
+Contains common fields available in all event types.
+
+
+
+==== beat.name
+
+The name of the Beat sending the log messages. If the shipper name is set in the configuration file, then that value is used. If it is not set, the hostname is used.
+
+
+==== beat.hostname
+
+The hostname as returned by the operating system on which the Beat is running.
+
+
+==== @timestamp
+
+type: date
+
+example: 2015-01-24 14:06:05.071000
+
+format: YYYY-MM-DDTHH:MM:SS.milliZ
+
+required: True
+
+The timestamp when the log line was read. The precision is in milliseconds. The timezone is UTC.
+
+
+==== metricset-host
+
+Hostname of the machine from which the metricset was collected. This field may not be present when the data was collected locally.
+
+
+==== rtt
+
+type: long
+
+required: True
+
+Event round trip time in microseconds
+
+
+[[exported-fields-apache-status]]
+=== Apache Status Info Fields
+
+Apache Status
+
+
+
+[[exported-fields-apache-status]]
+=== Apache Status Info Fields
+
+Apache Status info
+
+
+
+==== apache-status.hostname
+
+type: string
+
+Apache hostname
+
+
+==== apache-status.totalAccesses
+
+type: integer
+
+Total number of access requests
+
+
+==== apache-status.totalKBytes
+
+type: integer
+
+Total number of kilobytes served
+
+
+==== apache-status.reqPerSec
+
+type: float
+
+Requests per second
+
+
+==== apache-status.bytesPerSec
+
+type: float
+
+Bytes per second
+
+
+==== apache-status.bytesPerReq
+
+type: float
+
+Bytes per request
+
+
+==== apache-status.busyWorkers
+
+type: integer
+
+Number of busy workers
+
+
+==== apache-status.idleWorkers
+
+type: integer
+
+Number of idle workers
+
+
+=== uptime Fields
+
+Uptime stats
+
+
+
+==== apache-status.uptime.serverUptimeSeconds
+
+type: integer
+
+Server uptime in seconds
+
+
+==== apache-status.uptime.uptime
+
+type: integer
+
+Server uptime
+
+
+=== cpu Fields
+
+CPU stats
+
+
+
+==== apache-status.cpu.cpuLoad
+
+type: float
+
+CPU Load
+
+
+==== apache-status.cpu.cpuUser
+
+type: float
+
+cpu user load
+
+
+==== apache-status.cpu.cpuSystem
+
+type: float
+
+System cpu
+
+
+==== apache-status.cpu.cpuChildrenUser
+
+type: float
+
+CPU of children user
+
+
+==== apache-status.cpu.cpuChildrenSystem
+
+type: float
+
+cpu of children system
+
+
+=== connections Fields
+
+Connection stats
+
+
+
+==== apache-status.connections.connsTotal
+
+type: integer
+
+Total connections
+
+
+==== apache-status.connections.connsAsyncWriting
+
+type: integer
+
+Async connectin writing
+
+
+==== apache-status.connections.connsAsyncKeepAlive
+
+type: integer
+
+Async keeped alive connetions
+
+
+==== apache-status.connections.connsAsyncClosing
+
+type: integer
+
+Async closed connections
+
+
+=== load Fields
+
+Load averages
+
+
+
+==== apache-status.load.load1
+
+type: float
+
+Load average for the last minute
+
+
+==== apache-status.load.load5
+
+type: float
+
+Load avarage for the last 5 minutes
+
+
+==== apache-status.load.load15
+
+type: float
+
+Load aferage for the last 15 minutes
+
+
+=== scoreboard Fields
+
+Scoreboard metrics
+
+
+
+==== apache-status.scoreboard.startingUp
+
+type: integer
+
+Starting up
+
+
+==== apache-status.scoreboard.readingRequest
+
+type: integer
+
+Reading requests
+
+
+==== apache-status.scoreboard.sendingReply
+
+type: integer
+
+Sending Reply
+
+
+==== apache-status.scoreboard.keepalive
+
+type: integer
+
+Keep alive
+
+
+==== apache-status.scoreboard.dnsLookup
+
+type: integer
+
+Dns Lookups
+
+
+==== apache-status.scoreboard.closingConnection
+
+type: integer
+
+Closing connections
+
+
+==== apache-status.scoreboard.logging
+
+type: integer
+
+Logging
+
+
+==== apache-status.scoreboard.gracefullyFinishing
+
+type: integer
+
+Gracefully finishing
+
+
+==== apache-status.scoreboard.idleCleanup
+
+type: integer
+
+Idle cleanups
+
+
+==== apache-status.scoreboard.openSlot
+
+type: integer
+
+Open slots
+
+
+==== apache-status.scoreboard.waitingForConnection
+
+type: integer
+
+Waiting for connections
+
+
+==== apache-status.scoreboard.total
+
+type: integer
+
+Total
+
+
+[[exported-fields-redis-info]]
+=== Redis Info Stats Fields
+
+Redis Stats
+
+
+
+[[exported-fields-redis-info]]
+=== Redis Info Stats Fields
+
+Redis info stats
+
+
+
+=== clients Fields
+
+Redis client stats
+
+
+
+==== redis-info.clients.connected_clients
+
+type: integer
+
+Number of client connections (excluding connections from slaves)
+
+
+==== redis-info.clients.client_longest_output_list
+
+type: integer
+
+Longest output list among current client connections.
+
+
+==== redis-info.clients.client_biggest_input_buf
+
+type: integer
+
+Biggest input buffer among current client connections
+
+
+==== redis-info.clients.blocked_clients
+
+type: integer
+
+Number of clients pending on a blocking call (BLPOP, BRPOP, BRPOPLPUSH)
+
+
+=== cluster Fields
+
+Redis cluster information
+
+
+
+==== redis-info.cluster.cluster_enabled
+
+type: bool
+
+Indicate Redis cluster is enabled
+
+
+=== cpu Fields
+
+Redis CPU stats
+
+
+
+==== redis-info.cpu.used_cpu_sys
+
+type: float
+
+System CPU consumed by the Redis server
+
+
+==== redis-info.cpu.used_cpu_sys_children
+
+type: float
+
+User CPU consumed by the Redis server
+
+
+==== redis-info.cpu.used_cpu_user
+
+type: float
+
+System CPU consumed by the background processes
+
+
+==== redis-info.cpu.used_cpu_user_children
+
+type: float
+
+User CPU consumed by the background processes
+
+
+[[exported-fields-mysql-status]]
+=== MySQL Status Fields
+
+MySQL Stats
+
+
+
+[[exported-fields-mysql-status]]
+=== MySQL Status Fields
+
+MySQL Status
+
+
+
+=== aborted Fields
+
+Aborted status fields
+
+
+
+==== mysql-status.aborted.Aborted_clients
+
+type: integer
+
+The number of connections that were aborted because the client died without closing the connection properly.
+
+
+==== mysql-status.aborted.Aborted_connects
+
+type: integer
+
+The number of failed attempts to connect to the MySQL server.
+
+
+=== bytes Fields
+
+Bytes stats
+
+
+
+==== mysql-status.bytes.Bytes_received
+
+type: integer
+
+The number of bytes received from all clients.
+
+
+==== mysql-status.bytes.Bytes_sent
+
+type: integer
+
+The number of bytes sent to all clients.
+
+
