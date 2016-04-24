@@ -100,7 +100,7 @@ func (eb *Elasticbeat) Config(b *beat.Beat) error {
 }
 
 func (eb *Elasticbeat) Setup(b *beat.Beat) error {
-	eb.events = b.Events
+	eb.events = b.Publisher.Connect()
 	eb.done = make(chan struct{})
 	return nil
 }
