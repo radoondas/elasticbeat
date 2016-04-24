@@ -13,11 +13,13 @@ import (
 )
 
 var (
-	debugf = logp.MakeDebug("redis")
+	debugf = logp.MakeDebug("redis-info")
 )
 
 func init() {
-	helper.Registry.AddMetricSeter("redis", "info", New)
+	if err := helper.Registry.AddMetricSeter("redis", "info", New); err != nil {
+		panic(err)
+	}
 }
 
 // New creates new instance of MetricSeter

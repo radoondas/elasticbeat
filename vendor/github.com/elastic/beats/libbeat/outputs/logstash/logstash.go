@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/elastic/beats/libbeat/common"
+	"github.com/elastic/beats/libbeat/common/op"
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/elastic/beats/libbeat/outputs"
 	"github.com/elastic/beats/libbeat/outputs/mode"
@@ -90,7 +91,7 @@ func makeClientFactory(cfg *logstashConfig, tcfg *transport.Config) mode.ClientF
 		if err != nil {
 			return nil, err
 		}
-		return newLumberjackClient(t, compressLvl, maxBulkSz, to)
+		return newLumberjackClient(t, compressLvl, maxBulkSz, to, cfg.Index)
 	}
 }
 
@@ -102,34 +103,19 @@ func (lj *logstash) Close() error {
 //       processing (e.g. for filebeat). Batch like processing might reduce
 //       send/receive overhead per event for other implementors too.
 func (lj *logstash) PublishEvent(
-	signaler outputs.Signaler,
+	signaler op.Signaler,
 	opts outputs.Options,
 	event common.MapStr,
 ) error {
-	lj.addMeta(event)
 	return lj.mode.PublishEvent(signaler, opts, event)
 }
 
 // BulkPublish implements the BulkOutputer interface pushing a bulk of events
 // via lumberjack.
 func (lj *logstash) BulkPublish(
-	trans outputs.Signaler,
+	trans op.Signaler,
 	opts outputs.Options,
 	events []common.MapStr,
 ) error {
-	for _, event := range events {
-		lj.addMeta(event)
-	}
 	return lj.mode.PublishEvents(trans, opts, events)
-}
-
-// addMeta adapts events to be compatible with logstash forwarer messages by renaming
-// the "message" field to "line". The lumberjack server in logstash will
-// decode/rename the "line" field into "message".
-func (lj *logstash) addMeta(event common.MapStr) {
-	// add metadata for indexing
-	event["@metadata"] = common.MapStr{
-		"beat": lj.index,
-		"type": event["type"].(string),
-	}
 }

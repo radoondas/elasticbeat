@@ -20,10 +20,11 @@ class RedisInfoTest(metricbeat.BaseTest):
         """
         Redis module outputs an event.
         """
-        self.render_config_template(
-            redis=True,
-            redis_host=os.getenv('REDIS_HOST')
-        )
+        self.render_config_template(modules=[{
+            "name": "redis",
+            "metricsets": ["info"],
+            "hosts": [os.getenv('REDIS_HOST') + ":6379"],
+        }])
         proc = self.start_beat()
         self.wait_until(
             lambda: self.output_has(lines=1)
@@ -48,16 +49,19 @@ class RedisInfoTest(metricbeat.BaseTest):
         #self.assert_fields_are_documented(evt)
 
     @attr('integration')
-    def test_selectors(self):
+    def test_filters(self):
         """
-        Redis selectors filter the event.
+        Test filters for Redis info event.
         """
-        selectors = ["clients", "cpu"]
-        self.render_config_template(
-            redis=True,
-            redis_host=os.getenv('REDIS_HOST'),
-            redis_selectors=selectors
-        )
+        fields = ["clients", "cpu"]
+        self.render_config_template(modules=[{
+            "name": "redis",
+            "metricsets": ["info"],
+            "hosts": [os.getenv('REDIS_HOST') + ":6379"],
+            "filters": [{
+                "include_fields": fields,
+            }],
+        }])
         proc = self.start_beat()
         self.wait_until(
             lambda: self.output_has(lines=1)
@@ -74,6 +78,6 @@ class RedisInfoTest(metricbeat.BaseTest):
 
         self.assertItemsEqual(REDIS_FIELDS, evt.keys())
         redis_info = evt["redis-info"]
-        self.assertItemsEqual(selectors, redis_info.keys())
+        self.assertItemsEqual(fields, redis_info.keys())
         self.assertItemsEqual(CLIENTS_FIELDS, redis_info["clients"].keys())
         self.assertItemsEqual(CPU_FIELDS, redis_info["cpu"].keys())

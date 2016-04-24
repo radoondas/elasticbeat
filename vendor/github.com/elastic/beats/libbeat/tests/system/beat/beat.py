@@ -25,7 +25,7 @@ class Proc(object):
 
     def __init__(self, args, outputfile):
         self.args = args
-        self.output = open(outputfile, "wb")
+        self.output = open(outputfile, "ab")
 
     def start(self):
         self.stdin_read, self.stdin_write = os.pipe()
@@ -200,8 +200,12 @@ class TestCase(unittest.TestCase):
         jsons = []
         with open(os.path.join(self.working_dir, output_file), "r") as f:
             for line in f:
-                jsons.append(self.flatten_object(json.loads(line),
-                                                 []))
+                try:
+                    jsons.append(self.flatten_object(json.loads(line), []))
+                except:
+                    print("Fail to load the json {}".format(line))
+                    raise
+
         self.all_have_fields(jsons, required_fields or BEAT_REQUIRED_FIELDS)
         return jsons
 
