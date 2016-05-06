@@ -2,9 +2,16 @@ package beater
 
 import "strings"
 
+//GREEN cluster status
 const GREEN = 2
+
+//YELLOW cluster status
 const YELLOW = 1
+
+//RED cluster status
 const RED = 0
+
+//UNKNOWN cluster status
 const UNKNOWN = -1
 
 func TrimSuffix(s, suffix string) string {
@@ -23,7 +30,6 @@ func GetNumericalClusterStatus(s string) int64 {
 		return YELLOW
 	} else if strings.EqualFold(s, "red") {
 		return RED
-	} else {
-		return UNKNOWN
 	}
+	return UNKNOWN
 }
