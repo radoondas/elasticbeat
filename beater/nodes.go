@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-const NODE_STATS  = "/_nodes/stats/process,jvm,os,fs,thread_pool,transport,http,breaker,script"
+const NODE_STATS = "/_nodes/stats/process,jvm,os,fs,thread_pool,transport,http,breaker,script"
 const NODE_IDS = "/_cat/nodes?full_id=true&h=id"
 
 type NodeStats struct {
