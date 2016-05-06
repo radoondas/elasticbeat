@@ -85,7 +85,7 @@ func (eb *Elasticbeat) Config(b *beat.Beat) error {
 		eb.clusterHealthStats = true
 	}
 
-	if !eb.nodeStats && !eb.nodeStats && !eb.clusterHealthStats {
+	if !eb.nodeStats && !eb.clusterHealthStats {
 		return errors.New("Invalid statistics configuration")
 	}
 
