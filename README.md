@@ -3,7 +3,7 @@
 
 # ElasticBeat
 Use your elasticsearch to store your cluster's statistics easy with only elastic components!! :)
-Current version of ElasticBeat is tested only with latest version of Elasticsearch - 2.1.X.
+Current version of ElasticBeat works with Elasticsearch as stated in table below.
 
 Current status: **development release**. Further development and fine-tuning is in progress.
 
