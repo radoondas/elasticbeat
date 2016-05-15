@@ -1,6 +1,6 @@
 [
   {
-    "_id": "Cluster-health-shards",
+    "_id": "Cluster-document-count",
     "_type": "visualization",
     "_source": {
       "title": "Cluster health shards",
