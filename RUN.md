@@ -1,7 +1,9 @@
 # Short RUN guide
 
 First, setup [Go lang environment](https://golang.org/doc/install) (if you don't have it already)
+
 Add to your .bashrc important variables. 
+
 Supported GO versions: 1.5 (with GO15VENDOREXPERIMENT enabled) or 1.6+.
 
 ```bash
