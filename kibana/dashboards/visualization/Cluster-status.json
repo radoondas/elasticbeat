@@ -1,4 +1,8 @@
-{
+[
+  {
+    "_id": "Cluster-Status",
+    "_type": "visualization",
+    "_source": {
       "title": "Cluster status",
       "visState": "{\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":false,\"smoothLines\":true,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"cluster_stats.status_num\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"split\",\"params\":{\"field\":\"cluster_stats.cluster_name\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"row\":true}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
@@ -9,3 +13,5 @@
         "searchSourceJSON": "{\"filter\":[]}"
       }
     }
+  }
+]
