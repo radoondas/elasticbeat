@@ -10,19 +10,20 @@ Installation is the same as for all [dashboards](https://github.com/elastic/beat
 cd ~/workspace/go/src/github.com/radoondas/elasticbeat/kibana
 # get the content of the file [import_dashboards.sh](https://github.com/elastic/beats/blob/master/dev-tools/import_dashboards.sh) and save on the disk
 chmod u+x load.sh
-./load.sh -url http://localhost:9200
+./import_dashboards.sh -url http://localhost:9200
 ```
+Note: Windows script is located here as [import_dashboards.ps1](https://github.com/elastic/beats/blob/master/dev-tools/import_dashboards.ps1)
 
 If you want to use HTTP authentication for Elasticsearch, you can specify the credentials as a second parameter:
 
 ```bash
-./load.sh -url http://localhost:9200 -user 'admin:password'
+./import_dashboards.sh -url http://localhost:9200 -user 'admin:password'
 ```
 
 For more options:
 
 ```bash
-./load.sh -h
+./import_dashboards.sh -h
 ```
 
 ## Examples
