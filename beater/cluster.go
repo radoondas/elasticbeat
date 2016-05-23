@@ -68,11 +68,11 @@ type ClusterStats struct {
 			Throttle_time_in_millis uint64 `json:"throttle_time_in_millis"`
 		}
 		Fielddata struct {
-			Memory_size_in_bytes uint64 `json:"memory_size_in_bytes"`
+			Memory_size_in_bytes int64 `json:"memory_size_in_bytes"`
 			Evictions            uint64 `json:"evictions"`
 		}
 		Query_cache struct {
-			Memory_size_in_bytes uint64 `json:"memory_size_in_bytes"`
+			Memory_size_in_bytes int64 `json:"memory_size_in_bytes"`
 			Total_count          uint64 `json:"total_count"`
 			Hit_count            uint64 `json:"hit_count"`
 			Miss_count           uint64 `json:"miss_count"`
