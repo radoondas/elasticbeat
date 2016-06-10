@@ -26,6 +26,10 @@ type Elasticbeat struct {
 	clusterStats       bool
 	clusterHealthStats bool
 
+	auth     bool
+	username string
+	password string
+
 	done chan struct{}
 }
 
@@ -87,6 +91,20 @@ func (eb *Elasticbeat) Config(b *beat.Beat) error {
 
 	if !eb.nodeStats && !eb.clusterHealthStats {
 		return errors.New("Invalid statistics configuration")
+	}
+
+	if eb.EbConfig.Input.Authentication.Username == nil || eb.EbConfig.Input.Authentication.Password == nil {
+		logp.Err("Username or password is not set.")
+		eb.auth = false
+	} else if *eb.EbConfig.Input.Authentication.Username == "" || *eb.EbConfig.Input.Authentication.Password == "" {
+		logp.Err("Username or password is not set.")
+		eb.auth = false
+	} else {
+		eb.username = *eb.EbConfig.Input.Authentication.Username
+		eb.password = *eb.EbConfig.Input.Authentication.Password
+		eb.auth = true
+		logp.Debug(selector, "Username %v", eb.username)
+		logp.Debug(selector, "Password %v", eb.password)
 	}
 
 	logp.Debug(selector, "Init elasticbeat")

@@ -9,10 +9,15 @@ input:
   # Defaults to ["http://127.0.0.1:9200"].
   # Note: Do not use trailing slash
   urls:
-    - http://127.0.0.1:9200/
+    - http://127.0.0.1:9200
 
   # Statistics to collect
   stats:
     cluster: true
     nodes: true
     health: true
+
+  # Authentication
+  authentication:
+    username: es_admin
+    password: adminadmin
