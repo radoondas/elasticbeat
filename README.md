@@ -41,7 +41,7 @@ node.name: testnode1
 ## How to run it
 This is [simple run guide](/RUN.md).
 
-To run it on Windows follow [Window run guide](/RUN_Windows.md).
+To run Elasticbeat on Windows follow [Windows run guide](/RUN_Windows.md).
 
 ## Kibana guide
 This is [simple KIBANA guide](/KIBANA.md).
