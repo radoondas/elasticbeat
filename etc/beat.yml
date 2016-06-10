@@ -18,6 +18,6 @@ input:
     health: true
 
   # Authentication
-  authentication:
-    username: es_admin
-    password: adminadmin
+#  authentication:
+#    username: es_admin
+#    password: adminadmin

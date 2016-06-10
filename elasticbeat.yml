@@ -12,10 +12,10 @@ input:
     - http://127.0.0.1:9200
 
   # Statistics to collect
-  stats:
-    cluster: true
-    nodes: true
-    health: true
+#  stats:
+#    cluster: true
+#    nodes: true
+#    health: true
 
   # Authentication
   authentication:
