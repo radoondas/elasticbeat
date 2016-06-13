@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/elastic/beats/libbeat/logp"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/elastic/beats/libbeat/logp"
 )
 
 const NODE_STATS = "/_nodes/stats/process,jvm,os,fs,thread_pool,transport,http,breaker,script"
@@ -41,8 +42,8 @@ type NodeStats struct {
 	}
 	Process struct {
 		Timestamp             uint64 `json:"timestamp"`
-		Open_file_descriptors int64 `json:"open_file_descriptors"`
-		Max_file_descriptors  int64 `json:"max_file_descriptors"`
+		Open_file_descriptors int64  `json:"open_file_descriptors"`
+		Max_file_descriptors  int64  `json:"max_file_descriptors"`
 		Cpu                   struct {
 			Percent         uint64 `json:"percent"`
 			Total_in_millis uint64 `json:"total_in_millis"`
@@ -309,8 +310,14 @@ func (eb *Elasticbeat) GetNodesStats(u url.URL) ([]NodeStats, error) {
 	logp.Debug(selector, "Node ids: %+v", ids)
 
 	if len(ids) > 0 {
+		client := &http.Client{}
+		req, err := http.NewRequest("GET", TrimSuffix(u.String(), "/")+NODE_STATS, nil)
 
-		res, err := http.Get(TrimSuffix(u.String(), "/") + NODE_STATS)
+		if eb.auth {
+			req.SetBasicAuth(eb.username, eb.password)
+		}
+		res, err := client.Do(req)
+
 		if err != nil {
 			return nil, err
 		}
@@ -351,7 +358,14 @@ func (eb *Elasticbeat) GetNodesStats(u url.URL) ([]NodeStats, error) {
 }
 
 func (eb *Elasticbeat) GetNodeIDs(u url.URL) ([]string, error) {
-	res, err := http.Get(u.String() + NODE_IDS)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", TrimSuffix(u.String(), "/")+NODE_IDS, nil)
+
+	if eb.auth {
+		req.SetBasicAuth(eb.username, eb.password)
+	}
+	res, err := client.Do(req)
+
 	if err != nil {
 		return nil, err
 	}
