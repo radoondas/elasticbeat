@@ -9,13 +9,19 @@ input:
   # Defaults to ["http://127.0.0.1:9200"].
   # Note: Do not use trailing slash
   urls:
-    - http://127.0.0.1:9200/
+    - http://127.0.0.1:9200
 
   # Statistics to collect
-  stats:
-    cluster: true
-    nodes: true
-    health: true
+#  stats:
+#    cluster: true
+#    nodes: true
+#    health: true
+
+  # Authentication
+  authentication:
+    username: es_admin
+    password: adminadmin
+
 ###############################################################################
 ############################# Libbeat Config ##################################
 # Base config file used by all other beats for using libbeat features
@@ -52,18 +58,18 @@ output:
     #index: "elasticbeat"
 
     # A template is used to set the mapping in Elasticsearch
-    # By default template loading is disabled and no template is loaded.
+    # By default template loading is enabled and the template is loaded.
     # These settings can be adjusted to load your own template or overwrite existing ones
-    #template:
+    template:
 
       # Template name. By default the template name is elasticbeat.
-      #name: "elasticbeat"
+      name: "elasticbeat"
 
       # Path to template file
-      #path: "elasticbeat.template.json"
+      path: "elasticbeat.template.json"
 
       # Overwrite existing template
-      #overwrite: false
+      overwrite: false
 
     # Optional HTTP Path
     #path: "/elasticsearch"

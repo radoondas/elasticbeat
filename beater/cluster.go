@@ -68,11 +68,11 @@ type ClusterStats struct {
 			Throttle_time_in_millis uint64 `json:"throttle_time_in_millis"`
 		}
 		Fielddata struct {
-			Memory_size_in_bytes int64 `json:"memory_size_in_bytes"`
+			Memory_size_in_bytes int64  `json:"memory_size_in_bytes"`
 			Evictions            uint64 `json:"evictions"`
 		}
 		Query_cache struct {
-			Memory_size_in_bytes int64 `json:"memory_size_in_bytes"`
+			Memory_size_in_bytes int64  `json:"memory_size_in_bytes"`
 			Total_count          uint64 `json:"total_count"`
 			Hit_count            uint64 `json:"hit_count"`
 			Miss_count           uint64 `json:"miss_count"`
@@ -154,7 +154,14 @@ type ClusterStats struct {
 func (eb *Elasticbeat) GetCLusterHealth(u url.URL) (ClusterHealth, error) {
 	health := ClusterHealth{}
 
-	res, err := http.Get(TrimSuffix(u.String(), "/") + CLUSTER_HEALTH)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", TrimSuffix(u.String(), "/")+CLUSTER_HEALTH, nil)
+
+	if eb.auth {
+		req.SetBasicAuth(eb.username, eb.password)
+	}
+	res, err := client.Do(req)
+
 	if err != nil {
 		return health, err
 	}
@@ -181,7 +188,14 @@ func (eb *Elasticbeat) GetCLusterHealth(u url.URL) (ClusterHealth, error) {
 func (eb *Elasticbeat) GetCLusterStats(u url.URL) (ClusterStats, error) {
 	stats := ClusterStats{}
 
-	res, err := http.Get(TrimSuffix(u.String(), "/") + CLUSTER_STATS)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", TrimSuffix(u.String(), "/")+CLUSTER_STATS, nil)
+
+	if eb.auth {
+		req.SetBasicAuth(eb.username, eb.password)
+	}
+	res, err := client.Do(req)
+
 	if err != nil {
 		return stats, err
 	}
