@@ -124,7 +124,7 @@ type ClusterStats struct {
 		}
 		Process struct {
 			Cpu struct {
-				Percent uint64 `json:"percent"`
+				Percent int64 `json:"percent"`
 			}
 			Open_file_descriptors struct {
 				Min float64 `json:"min"`

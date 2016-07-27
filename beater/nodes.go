@@ -45,7 +45,7 @@ type NodeStats struct {
 		Open_file_descriptors int64  `json:"open_file_descriptors"`
 		Max_file_descriptors  int64  `json:"max_file_descriptors"`
 		Cpu                   struct {
-			Percent         uint64 `json:"percent"`
+			Percent         int64  `json:"percent"`
 			Total_in_millis uint64 `json:"total_in_millis"`
 		}
 		Mem struct {
