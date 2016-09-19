@@ -5,6 +5,7 @@ First, setup [Go lang environment](https://golang.org/doc/install) (if you don't
 Add to your .bashrc important variables. 
 
 Supported GO versions: 1.5 (with GO15VENDOREXPERIMENT enabled) or 1.6+.
+**Suggested version of GO: 1.7+**
 
 ```bash
 export GOROOT="$HOME/opt/go"
